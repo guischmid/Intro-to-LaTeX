@@ -1,0 +1,833 @@
+% =====================================================================
+%  Intro to LaTeX: Workshop für Physik-Erstis
+%  Kompilieren mit pdfLaTeX (Overleaf-Standard), zweimal für Overlays:
+%  latexmk -pdf latex-workshop.tex
+% =====================================================================
+\documentclass[aspectratio=169,11pt,xcolor=table]{beamer}
+
+% ---------------------------------------------------------------------
+%  Pakete
+% ---------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\IfFileExists{FiraSans.sty}{%
+  \usepackage[sfdefault,lining]{FiraSans}
+  \usepackage[scale=0.85]{FiraMono}}{\usepackage{lmodern}}
+\usepackage{amsmath,amssymb}
+\usepackage[locale=DE]{siunitx}
+\usepackage{braket}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}
+\usepackage[european]{circuitikz}
+\usepackage{tikz-feynman}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ---------------------------------------------------------------------
+%  Farben
+% ---------------------------------------------------------------------
+\definecolor{dunkel}{HTML}{16213E}   % Hintergrund dunkler Folien, Titel
+\definecolor{akzent}{HTML}{E9A23B}   % Akzent: Balken, Aufzählungszeichen
+\definecolor{blau}{HTML}{3D7EA6}     % Zweitfarbe: Code, Hervorhebungen
+\definecolor{papier}{HTML}{FBFBF8}   % Folienhintergrund
+\definecolor{hell}{HTML}{EDF1F5}     % Kästen
+\definecolor{grau}{HTML}{6B7280}     % Nebentext
+\definecolor{codebg}{HTML}{F2F4F7}   % Code-Hintergrund
+
+% ---------------------------------------------------------------------
+%  Beamer-Layout
+% ---------------------------------------------------------------------
+\setbeamersize{text margin left=1.3cm, text margin right=1.3cm}
+\setbeamercolor{background canvas}{bg=papier}
+\setbeamercolor{normal text}{fg=dunkel}
+\setbeamercolor{structure}{fg=dunkel}
+\setbeamercolor{alerted text}{fg=akzent!80!black}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+% Folientitel mit Akzentbalken
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.7em}%
+  {\usebeamerfont{frametitle}\color{dunkel}\insertframetitle\par}%
+  \vspace{-0.1em}%
+  {\color{akzent}\rule{2.4em}{2.5pt}}\par
+  \vspace*{-0.6em}}
+
+% Fußzeile mit Fortschrittsbalken
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,0.8cm);
+    \fill[hell] (0,0) rectangle (\paperwidth,2.5pt);
+    \pgfmathsetmacro{\fortschritt}{min(1,\the\value{framenumber}/\inserttotalframenumber)}
+    \fill[akzent] (0,0) rectangle (\fortschritt\paperwidth,2.5pt);
+    \node[anchor=west, font=\tiny, text=grau] at (1.3cm,0.42cm) {Intro to \LaTeX};
+    \node[anchor=east, font=\tiny, text=grau] at (\paperwidth-1.3cm,0.42cm)
+      {\insertframenumber\,/\,\inserttotalframenumber};
+  \end{tikzpicture}}
+
+% Aufzählungszeichen
+\setbeamertemplate{itemize item}{\color{akzent}\raisebox{0.15ex}{\rule{0.42em}{0.42em}}}
+\setbeamertemplate{itemize subitem}{\color{grau}\raisebox{0.25ex}{\rule{0.3em}{0.3em}}}
+\setbeamertemplate{enumerate item}{%
+  \tikz[baseline=(n.base)]\node[fill=akzent, circle, inner sep=1.4pt, minimum size=1.25em,
+    text=white, font=\scriptsize\bfseries] (n) {\insertenumlabel};}
+\setlength{\leftmargini}{1.4em}
+
+% Titelfolie
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dunkel] (current page.south west) rectangle (current page.north east);
+    % dezente Formeln im Hintergrund
+    \begin{scope}[text=white, opacity=0.07]
+      \node[font=\Huge, rotate=8] at ([xshift=-3.8cm,yshift=2.6cm]current page.east)
+        {$i\hbar\,\partial_t \Psi = \hat{H}\Psi$};
+      \node[font=\LARGE, rotate=-6] at ([xshift=-2.6cm,yshift=0.4cm]current page.east)
+        {$\nabla \cdot \vec{E} = \rho / \varepsilon_0$};
+      \node[font=\Huge, rotate=4] at ([xshift=-4.2cm,yshift=-1.7cm]current page.east)
+        {$E = mc^2$};
+      \node[font=\LARGE, rotate=-10] at ([xshift=-1.8cm,yshift=-3.0cm]current page.east)
+        {$\oint \vec{B} \cdot \mathrm{d}\vec{s} = \mu_0 I$};
+    \end{scope}
+    \node[anchor=south west, inner sep=0, text=white,
+          font=\fontsize{42}{46}\selectfont\bfseries] (t)
+      at ([xshift=1.5cm,yshift=0.5cm]current page.west) {\inserttitle};
+    \fill[akzent] ([yshift=-0.45cm]t.south west) rectangle ++(3cm,0.13cm);
+    \node[anchor=north west, inner sep=0, text=white!85!dunkel, font=\Large]
+      at ([yshift=-0.9cm]t.south west) {\insertsubtitle};
+    \node[anchor=south west, inner sep=0, text=white!65!dunkel, font=\small, align=left]
+      at ([xshift=1.5cm,yshift=1.2cm]current page.south west)
+      {\textbf{\insertauthor}\\[2pt]\insertinstitute\\[2pt]\insertdate};
+  \end{tikzpicture}}
+
+% Abschnittsfolien
+\newcommand{\zweistellig}[1]{\ifnum#1<10 0\fi\number#1}
+\AtBeginSection[]{%
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture, overlay]
+      \fill[dunkel] (current page.south west) rectangle (current page.north east);
+      \node[anchor=south west, inner sep=0, text=akzent,
+            font=\fontsize{64}{64}\selectfont\bfseries] (n)
+        at ([xshift=1.5cm,yshift=0.1cm]current page.west) {\zweistellig{\value{section}}};
+      \node[anchor=north west, inner sep=0, text=white,
+            font=\fontsize{30}{34}\selectfont\bfseries]
+        at ([yshift=-0.55cm]n.south west) {\insertsectionhead};
+    \end{tikzpicture}
+  \end{frame}}
+
+% ---------------------------------------------------------------------
+%  Kästen
+% ---------------------------------------------------------------------
+\newtcolorbox{kasten}[1]{enhanced, halign=flush left, colback=hell, colframe=akzent, boxrule=0pt,
+  leftrule=3pt, arc=3pt, left=8pt, right=8pt, top=4pt, bottom=6pt,
+  title={#1}, colbacktitle=hell, coltitle=dunkel, fonttitle=\bfseries,
+  titlerule=0pt, toptitle=5pt, bottomtitle=0pt}
+
+\newtcolorbox{merke}{enhanced, halign=flush left, colback=akzent!14!papier, colframe=akzent,
+  boxrule=0pt, leftrule=3pt, arc=3pt, left=10pt, top=5pt, bottom=5pt}
+
+\newtcolorbox{karte}[3][akzent]{enhanced, halign=flush left, colback=white, colframe=hell,
+  boxrule=0.8pt, arc=4pt, left=8pt, right=8pt, top=6pt, bottom=2pt,
+  borderline north={3pt}{0pt}{#1}, fontupper=\small,
+  before upper app={\setlength{\itemsep}{0pt}},
+  before upper={{\large\bfseries #2}\par{\scriptsize\color{grau}#3}\par\vspace{0.2em}}}
+
+\newtcolorbox{bildkarte}{enhanced, colback=white, colframe=hell, boxrule=0.8pt,
+  arc=4pt, halign=center, valign=center}
+
+% kleine Markierungen
+\newcommand{\pill}[2][akzent]{%
+  \tikz[baseline=(p.base)]\node[fill=#1, text=white, rounded corners=6pt,
+    inner xsep=6pt, inner ysep=2.5pt, font=\scriptsize\bfseries] (p) {#2};}
+\newcommand{\zeittag}[1]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east, fill=dunkel, text=white, rounded corners=6pt,
+      inner xsep=7pt, inner ysep=3pt, font=\scriptsize\bfseries]
+      at ([xshift=-1.3cm,yshift=-1.05cm]current page.north east) {#1};
+  \end{tikzpicture}}
+
+% Zeile im Ablauf-Zeitstrahl
+\newcommand{\zeile}[5]{%
+  \node[anchor=east, font=\small\bfseries, text=grau] at (1.9,#1) {#2};
+  \fill[#5] (2.3,#1) circle (4.5pt);
+  \node[anchor=west, font=\bfseries, text=#5!70!dunkel] at (2.8,#1) {#3};
+  \node[anchor=west, font=\small, text=grau] at (7.6,#1) {#4};}
+
+% ---------------------------------------------------------------------
+%  Code-Darstellung
+% ---------------------------------------------------------------------
+\lstdefinestyle{latex}{
+  language=[LaTeX]TeX,
+  basicstyle=\ttfamily\footnotesize\color{dunkel},
+  commentstyle=\color{grau}\itshape,
+  texcsstyle=*\color{blau}\bfseries,
+  keywordstyle=\color{blau}\bfseries,
+  columns=fullflexible, keepspaces=true, breaklines=true,
+  showstringspaces=false,
+  moretexcs={documentclass,usepackage,section,subsection,label,ref,eqref,
+             begin,end,item,frac,sqrt,int,sum,vec,partial,qty,unit,braket,
+             ket,bra,newcommand,includegraphics,textbf,emph,maketitle,title,
+             author,text,nabla,varepsilon,mathrm,hat},
+  literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+           {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1 {ß}{{\ss}}1
+}
+\lstdefinestyle{log}{
+  basicstyle=\ttfamily\footnotesize\color{dunkel},
+  columns=fullflexible, keepspaces=true}
+
+% Nur Code
+\newtcblisting{code}[1][]{enhanced, listing only, colback=codebg,
+  colframe=codebg, boxrule=0pt, arc=4pt, left=8pt, right=6pt, top=3pt,
+  bottom=3pt, listing options={style=latex}, #1}
+
+% Code links, gesetztes Ergebnis rechts
+\newtcblisting{codeerg}[1][]{bicolor, listing side text, colback=codebg,
+  colbacklower=white, colframe=codebg, boxrule=1pt, arc=4pt,
+  lefthand ratio=0.57, sidebyside gap=14pt, sidebyside align=center seam,
+  segmentation hidden, left=8pt, right=8pt, top=14pt, bottom=6pt,
+  listing options={style=latex},
+  overlay={%
+    \node[anchor=north west, inner sep=5pt, font=\tiny\bfseries, text=grau]
+      at (frame.north west) {CODE};
+    \node[anchor=north west, inner sep=5pt, font=\tiny\bfseries, text=grau]
+      at (frame.north west-|segmentation.east) {ERGEBNIS};},
+  #1}
+
+% ---------------------------------------------------------------------
+%  Titelangaben
+% ---------------------------------------------------------------------
+\title{Intro to \LaTeX}
+\subtitle{Workshop für Physik-Erstis}
+\author{Gigi}
+\institute{jDPG Regionalgruppe Tübingen}
+\date{\today}
+
+% =====================================================================
+\begin{document}
+% =====================================================================
+
+\begin{frame}[plain,noframenumbering]
+  \titlepage
+\end{frame}
+
+% ---------------------------------------------------------------------
+\begin{frame}{Ablauf}
+  \centering
+  \begin{tikzpicture}[y=-0.72cm]
+    \draw[hell, line width=2.5pt] (2.3,0) -- (2.3,7);
+    \zeile{0}{0--10}{Was ist \LaTeX?}{Konzept, Geschichte, Relevanz}{dunkel}
+    \zeile{1}{10--20}{Optionen}{Overleaf, lokale Installation, Editoren}{dunkel}
+    \zeile{2}{20--35}{Grundgerüst und Text}{Präambel, Pakete, Struktur}{dunkel}
+    \zeile{3}{35--50}{Mathematik}{Formeln, \texttt{align}, Einheiten}{dunkel}
+    \zeile{4}{50--75}{Praxisteil}{Ihr seid dran}{akzent}
+    \zeile{5}{75--82}{Was noch alles geht}{TikZ, Plots, Pakete}{dunkel}
+    \zeile{6}{82--87}{\LaTeX{} und KI}{Nutzen, Overleaf, Grenzen}{dunkel}
+    \zeile{7}{87--90}{Abschluss}{Ressourcen und Fragen}{dunkel}
+  \end{tikzpicture}
+\end{frame}
+
+% =====================================================================
+\section{Was ist \LaTeX?}
+% =====================================================================
+
+\begin{frame}{Markup statt WYSIWYG}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Word, LibreOffice, \dots}
+        \begin{itemize}
+          \item \emph{What You See Is What You Get}
+          \item Formatierung direkt beim Schreiben
+          \item Layout liegt in eurer Verantwortung
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{\LaTeX}
+        \begin{itemize}
+          \item Ihr beschreibt die \alert{Struktur}
+          \item \LaTeX{} übernimmt das \alert{Layout}
+          \item Inhalt und Form sind getrennt
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+  \end{columns}
+  \vspace{0.6em}
+  \begin{merke}
+    Ihr schreibt \texttt{\textbackslash section\{Einleitung\}}, nicht
+    \glqq Arial, 14\,pt, fett, Abstand 12\,pt\grqq.
+  \end{merke}
+\end{frame}
+
+\begin{frame}{Vom Quelltext zum PDF}
+  \centering
+  \vspace{1em}
+  \begin{tikzpicture}[
+      box/.style={rounded corners=5pt, fill=white, draw=hell, line width=1pt,
+                  minimum width=3.2cm, minimum height=1.6cm, align=center},
+      pfeil/.style={-{Stealth[length=3.5mm]}, line width=1.6pt, akzent}]
+    \node[box] (tex) {\textbf{\texttt{bericht.tex}}\\[3pt]\scriptsize\color{grau}Quelltext};
+    \node[box, right=1.6cm of tex, fill=dunkel, draw=dunkel, text=white] (comp)
+      {\textbf{\texttt{pdflatex}}\\[3pt]\scriptsize\color{white!70!dunkel}Compiler};
+    \node[box, right=1.6cm of comp] (pdf) {\textbf{\texttt{bericht.pdf}}\\[3pt]\scriptsize\color{grau}Ergebnis};
+    \draw[pfeil] (tex) -- (comp);
+    \draw[pfeil] (comp) -- (pdf);
+    \node[below=0.5cm of comp, text=grau, font=\scriptsize]
+      {Nebenprodukte: \texttt{.aux}, \texttt{.log}, \texttt{.toc}, \dots};
+  \end{tikzpicture}
+  \vspace{1.5em}
+  \begin{itemize}
+    \item Ähnlich wie beim Programmieren: schreiben, kompilieren, Ergebnis ansehen
+    \item Fehler stehen in der \texttt{.log}-Datei bzw.\ im Editor
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Geschichte und Relevanz}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \textbf{Geschichte}\par\vspace{0.4em}
+      \begin{itemize}
+        \item \alert{1978:} Donald Knuth entwickelt \TeX, weil ihm der Satz seiner Bücher nicht gefällt
+        \item \alert{1984:} Leslie Lamport baut \LaTeX{} als Makropaket darauf
+        \item \alert{Heute:} \LaTeXe{} plus tausende Pakete auf CTAN
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \textbf{Warum in der Physik?}\par\vspace{0.4em}
+      \begin{itemize}
+        \item Formelsatz in hoher Qualität
+        \item Standard für Paper, arXiv und Abschlussarbeiten
+        \item Skripte und Übungsblätter sind damit gesetzt
+        \item Kostenlos, plattformunabhängig, reine Textdateien
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{0.3em}
+  \begin{tcolorbox}[enhanced, colback=white, colframe=hell, boxrule=0.8pt, arc=4pt, halign=center]
+    $\displaystyle i\hbar\frac{\partial}{\partial t}\Psi(\mathbf{r},t)
+      = \left[-\frac{\hbar^2}{2m}\nabla^2 + V(\mathbf{r},t)\right]\Psi(\mathbf{r},t)$
+  \end{tcolorbox}
+\end{frame}
+
+% =====================================================================
+\section{Optionen}
+% =====================================================================
+
+\begin{frame}{Wo schreibe ich \LaTeX?}
+  \small
+  \begin{tcbraster}[raster columns=3, raster equal height, raster column skip=10pt]
+    \begin{karte}{Overleaf}{im Browser}
+      \textbf{Vorteile}
+      \begin{itemize}
+        \item Keine Installation
+        \item Echtzeit-Kollaboration
+        \item Viele Vorlagen
+      \end{itemize}
+      \textbf{Nachteile}
+      \begin{itemize}
+        \item Internet nötig
+        \item Gratis-Version begrenzt
+      \end{itemize}
+    \end{karte}
+    \begin{karte}{Lokal}{auf dem eigenen Rechner}
+      \textbf{Vorteile}
+      \begin{itemize}
+        \item Offline und schnell
+        \item Volle Kontrolle
+        \item Beliebiger Editor
+      \end{itemize}
+      \textbf{Nachteile}
+      \begin{itemize}
+        \item Mehrere GB groß
+        \item Mehr Einrichtung
+      \end{itemize}
+    \end{karte}
+    \begin{karte}[grau]{Typst}{moderne Alternative}
+      \textbf{Vorteile}
+      \begin{itemize}
+        \item Einfachere Syntax
+        \item Sehr schnell
+      \end{itemize}
+      \textbf{Nachteile}
+      \begin{itemize}
+        \item Kein \LaTeX
+        \item Journals wollen \LaTeX
+      \end{itemize}
+    \end{karte}
+  \end{tcbraster}
+\end{frame}
+
+\begin{frame}{Lokale Installation: Distribution und Editor}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Distribution (der Compiler)}
+        \begin{itemize}
+          \item \textbf{TeX Live:} Linux, Windows
+          \item \textbf{MacTeX:} macOS
+          \item \textbf{MiKTeX:} Windows, lädt Pakete bei Bedarf nach
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Editor (wo ihr tippt)}
+        \begin{itemize}
+          \item \textbf{TeXstudio:} einsteigerfreundlich
+          \item \textbf{VS Code} + LaTeX Workshop
+          \item \textbf{Emacs} + AUCTeX
+          \item \textbf{Neovim} + VimTeX
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+  \end{columns}
+  \vspace{0.6em}
+  \begin{merke}
+    \textbf{Empfehlung für heute:} Overleaf. Lokal lohnt sich später, z.\,B.\ fürs Praktikum.
+  \end{merke}
+\end{frame}
+
+% =====================================================================
+\section{Grundgerüst und Text}
+% =====================================================================
+
+\begin{frame}[fragile]{Das minimale Dokument}
+  \begin{columns}[c]
+    \begin{column}{0.56\textwidth}
+\begin{code}
+\documentclass{article}   % Dokumenttyp
+
+% Präambel: Einstellungen und Pakete
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+
+\title{Mein erstes Dokument}
+\author{Max Mustermann}
+
+\begin{document}          % Inhalt
+\maketitle
+Hallo Welt!
+\end{document}
+\end{code}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{itemize}
+        \item \textbf{Präambel:} alles vor \texttt{\textbackslash begin\{document\}}
+        \item Befehle beginnen mit \texttt{\textbackslash}
+        \item Pflichtargumente in \texttt{\{\}}, optionale in \texttt{[\,]}
+        \item \texttt{\%} leitet einen Kommentar ein
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Wichtige Pakete für den Anfang}
+  \centering
+  \rowcolors{2}{papier}{hell}
+  \begin{tabular}{@{}p{4.6cm}p{6.8cm}@{}}
+    \toprule
+    \textbf{Paket} & \textbf{Wofür?}\\
+    \midrule
+    \texttt{babel} mit \texttt{ngerman} & Deutsche Silbentrennung und Bezeichnungen\\
+    \texttt{amsmath}, \texttt{amssymb} & Erweiterter Mathesatz und Symbole\\
+    \texttt{siunitx} & Zahlen und Einheiten korrekt setzen\\
+    \texttt{graphicx} & Bilder einbinden\\
+    \texttt{booktabs} & Schöne Tabellen\\
+    \texttt{hyperref} & Klickbare Verweise im PDF\\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[fragile]{Struktur, Listen und Verweise}
+  \begin{columns}[c]
+    \begin{column}{0.53\textwidth}
+\begin{code}
+\section{Einleitung}
+\label{sec:einleitung}
+
+Text mit \textbf{fett} und \emph{betont}.
+
+\begin{itemize}
+  \item erster Punkt
+  \item zweiter Punkt
+\end{itemize}
+
+\subsection{Messung}
+Siehe Abschnitt~\ref{sec:einleitung}.
+\end{code}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{itemize}
+        \item Abschnitte werden automatisch nummeriert
+        \item \texttt{itemize} für Stichpunkte, \texttt{enumerate} für Nummern
+        \item \texttt{\textbackslash label} und \texttt{\textbackslash ref}: Verweise passen sich selbst an
+        \item Leerzeile beginnt einen neuen Absatz
+        \item \texttt{\textasciitilde} ist ein geschütztes Leerzeichen
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Fehlermeldungen lesen}
+\begin{code}[listing options={style=log}, colback=akzent!10!papier, colframe=akzent!10!papier]
+! Missing $ inserted.
+<inserted text>
+                $
+l.12 Die Energie ist E = mc^
+                            2.
+\end{code}
+  \vspace{0.3em}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{itemize}
+        \item \texttt{l.12}: Fehler in Zeile 12
+        \item Hier steht \texttt{\^{}} außerhalb des Mathemodus, es fehlt \texttt{\$\,\dots\$}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{merke}
+        Immer den \textbf{ersten} Fehler beheben, dann neu kompilieren.
+      \end{merke}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% =====================================================================
+\section{Mathematik}
+% =====================================================================
+
+\begin{frame}[fragile]{Inline und abgesetzt}
+\begin{codeerg}
+Die Kraft ist $F = m a$.
+
+\[ E = \frac{1}{2} m v^2 \]
+
+\begin{equation}
+  \nabla \cdot \vec{E}
+    = \frac{\rho}{\varepsilon_0}
+  \label{eq:gauss}
+\end{equation}
+Siehe Gleichung~\eqref{eq:gauss}.
+\end{codeerg}
+\end{frame}
+
+\begin{frame}{Die wichtigsten Bausteine}
+  \centering
+  \rowcolors{2}{papier}{hell}
+  \begin{tabular}{@{}lc@{\hspace{3em}}lc@{}}
+    \toprule
+    \textbf{Eingabe} & \textbf{Ausgabe} & \textbf{Eingabe} & \textbf{Ausgabe}\\
+    \midrule
+    \texttt{x\^{}2, x\_i} & $x^2,\ x_i$ & \texttt{\textbackslash alpha, \textbackslash Omega} & $\alpha,\ \Omega$\\
+    \texttt{\textbackslash frac\{a\}\{b\}} & $\frac{a}{b}$ & \texttt{\textbackslash vec\{v\}} & $\vec{v}$\\
+    \texttt{\textbackslash sqrt\{x\}} & $\sqrt{x}$ & \texttt{\textbackslash partial} & $\partial$\\
+    \texttt{\textbackslash int\_0\^{}\textbackslash infty} & $\int_0^\infty$ & \texttt{\textbackslash nabla} & $\nabla$\\
+    \texttt{\textbackslash sum\_\{n=1\}\^{}N} & $\sum_{n=1}^N$ & \texttt{\textbackslash hbar} & $\hbar$\\
+    \texttt{\textbackslash left( \textbackslash frac\{a\}\{b\} \textbackslash right)} & $\left(\frac{a}{b}\right)$ & \texttt{\textbackslash cdot, \textbackslash times} & $\cdot,\ \times$\\
+    \bottomrule
+  \end{tabular}
+  \vspace{1em}
+
+  \begin{merke}
+    Symbol vergessen? \textbf{Detexify}: Symbol zeichnen, Befehl bekommen.
+  \end{merke}
+\end{frame}
+
+\begin{frame}[fragile]{Mehrzeilige Gleichungen mit \texttt{align}}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+\begin{code}
+\begin{align}
+  E &= E_\text{kin} + E_\text{pot} \\
+    &= \frac{1}{2} m v^2 + m g h
+\end{align}
+\end{code}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \begin{bildkarte}
+        \vspace{-0.6em}
+        \begin{align}
+          E &= E_\text{kin} + E_\text{pot} \\
+            &= \frac{1}{2} m v^2 + m g h
+        \end{align}
+      \end{bildkarte}
+    \end{column}
+  \end{columns}
+  \vspace{0.8em}
+  \begin{itemize}
+    \item \texttt{\&} markiert die Stelle, an der ausgerichtet wird
+    \item \texttt{\textbackslash\textbackslash} beendet die Zeile, \texttt{align*} verzichtet auf Nummern
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Zahlen und Einheiten mit \texttt{siunitx}}
+  \small Präambel: \texttt{\textbackslash usepackage[locale=DE]\{siunitx\}}. Korrekte Abstände, aufrechte Einheiten, Dezimalkomma und Unsicherheiten.\par\vspace{0.4em}
+\begin{codeerg}
+$g = \qty{9.81}{\metre\per\second\squared}$
+
+$\lambda = \qty{632.8}{\nano\metre}$
+
+$h = \qty{6.626e-34}{\joule\second}$
+
+$T = \qty{2.04(3)}{\second}$
+\end{codeerg}
+\end{frame}
+
+% =====================================================================
+\section{Praxisteil}
+% =====================================================================
+
+\begin{frame}{Aufgabe 1: Eure Übungsblatt-Vorlage}
+  \zeittag{ca.\ 12 Min.}
+  \begin{kasten}{Ziel}
+    Eine Vorlage, die ihr ab sofort für eure Abgaben nutzen könnt.
+  \end{kasten}
+  \vspace{0.3em}
+  \begin{enumerate}
+    \setlength{\itemsep}{0.4em}
+    \item Neues Projekt in Overleaf anlegen oder die Vorlage kopieren
+    \item Titel mit Name, Matrikelnummer, Übungsgruppe und Blattnummer
+    \item Aufgaben als \texttt{\textbackslash section*\{Aufgabe 1\}} mit Teilaufgaben a), b), c)
+    \item Pakete laden: \texttt{babel}, \texttt{amsmath}, \texttt{siunitx}
+    \item Eine Rechnung mit \texttt{align} und ein Ergebnis mit Einheit einfügen
+  \end{enumerate}
+  \vspace{0.4em}
+  \pill[blau]{Bonus} \small Kopf- und Fußzeile mit \texttt{fancyhdr}, eigenes Makro mit \texttt{\textbackslash newcommand}
+\end{frame}
+
+\begin{frame}{Aufgabe 2: Formel-Challenge}
+  \zeittag{ca.\ 12 Min.}
+  Setzt die Formeln so genau wie möglich nach:
+  \vspace{0.6em}
+
+  \renewcommand{\arraystretch}{2.3}
+  \begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}
+    \pill[blau!60]{Level 1} & $\displaystyle F = m a, \qquad E = m c^2, \qquad p = \frac{h}{\lambda}$\\
+    \pill[blau]{Level 2} & $\displaystyle \nabla \times \vec{B} = \mu_0 \vec{j} + \mu_0 \varepsilon_0 \frac{\partial \vec{E}}{\partial t}$\\
+    \pill[akzent]{Level 3} & $\displaystyle \langle x \rangle = \int_{-\infty}^{\infty} \psi^*(x)\, x\, \psi(x) \,\mathrm{d}x$\\
+    \pill[akzent!70!red]{Level 4} & $\displaystyle Z = \sum_{n=0}^{\infty} \exp\left(-\frac{E_n}{k_\mathrm{B} T}\right), \qquad E_n = \hbar\omega\left(n + \frac{1}{2}\right)$
+  \end{tabular}
+\end{frame}
+
+% =====================================================================
+\section{Was noch alles geht}
+% =====================================================================
+
+\begin{frame}{Zeichnungen mit TikZ}
+  \begin{tcbraster}[raster columns=2, raster equal height, raster column skip=14pt]
+    \begin{bildkarte}
+      \begin{circuitikz}[scale=0.85, transform shape]
+        \draw (0,0) to[battery1, l=$U_0$] (0,3)
+              to[R, l=$R$] (3,3)
+              to[L, l=$L$] (3,0)
+              to[C, l=$C$] (0,0);
+      \end{circuitikz}\par\vspace{0.6em}
+      \pill[dunkel]{circuitikz} \scriptsize\color{grau} RLC-Schwingkreis
+    \end{bildkarte}
+    \begin{bildkarte}
+      \begin{tikzpicture}[scale=0.85, transform shape]
+        \begin{feynman}
+          \vertex (a) at (0,0) {$e^-$};
+          \vertex (b) at (0,-3) {$e^+$};
+          \vertex (v1) at (1.5,-1.5);
+          \vertex (v2) at (3.5,-1.5);
+          \vertex (c) at (5,0) {$\mu^-$};
+          \vertex (d) at (5,-3) {$\mu^+$};
+          \diagram* {
+            (a) -- [fermion] (v1) -- [fermion] (b),
+            (v1) -- [photon, edge label=$\gamma$] (v2),
+            (d) -- [fermion] (v2) -- [fermion] (c),
+          };
+        \end{feynman}
+      \end{tikzpicture}\par\vspace{0.6em}
+      \pill[dunkel]{tikz-feynman} \scriptsize\color{grau} $e^+e^- \to \mu^+\mu^-$
+    \end{bildkarte}
+  \end{tcbraster}
+\end{frame}
+
+\begin{frame}{Plots direkt im Dokument mit \texttt{pgfplots}}
+  \begin{columns}[c]
+    \begin{column}{0.57\textwidth}
+      \begin{bildkarte}
+        \begin{tikzpicture}
+          \begin{axis}[
+              width=6.6cm, height=4.8cm,
+              xlabel={$t$ / \si{\second}}, ylabel={$x$ / \si{\centi\metre}},
+              axis lines=left, axis line style={grau},
+              tick label style={font=\scriptsize, text=grau},
+              label style={font=\small},
+              grid=major, grid style={hell},
+              legend style={draw=none, fill=none, font=\scriptsize},
+              legend pos=north east]
+            \addplot[akzent, line width=1.6pt, domain=0:10, samples=200]
+              {5*exp(-0.3*x)*cos(deg(3*x))};
+            \addlegendentry{gedämpfte Schwingung}
+            \addplot[blau, dashed, domain=0:10, samples=100] {5*exp(-0.3*x)};
+            \addlegendentry{Einhüllende}
+            \addplot[blau, dashed, domain=0:10, samples=100, forget plot] {-5*exp(-0.3*x)};
+          \end{axis}
+        \end{tikzpicture}
+      \end{bildkarte}
+    \end{column}
+    \begin{column}{0.39\textwidth}
+      \begin{itemize}
+        \item Funktionen oder Messdaten (CSV) direkt plotten
+        \item Schrift und Stil passen automatisch zum Dokument
+        \item Alternativ: Plot mit Python exportieren und mit \texttt{\textbackslash includegraphics} einbinden
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Pakete und Makros, die Tipparbeit sparen}
+\begin{codeerg}
+% braket: Dirac-Notation
+$\braket{\psi | \hat{H} | \psi}$,
+$\ket{\uparrow}$, $\bra{\phi}$
+
+% Eigenes Makro
+\newcommand{\dd}[1]{\,\mathrm{d}#1}
+$\int f(x) \dd{x}$
+\end{codeerg}
+  \vspace{0.5em}
+  \begin{itemize}
+    \item \texttt{physics}: Kurzbefehle für Ableitungen und Beträge (kollidiert mit \texttt{\textbackslash qty} aus \texttt{siunitx})
+    \item \texttt{mhchem}: Reaktionsgleichungen \quad \texttt{biblatex}: Literaturverzeichnis aus einer \texttt{.bib}-Datei
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dunkel] (current page.south west) rectangle (current page.north east);
+    \node[text=white, align=center, font=\LARGE\bfseries] (a)
+      at ([yshift=0.6cm]current page.center)
+      {Diese Präsentation ist komplett\\in \LaTeX{} geschrieben.};
+    \fill[akzent] ([yshift=-0.35cm, xshift=-1.2cm]a.south) rectangle ++(2.4cm,0.1cm);
+    \node[text=white!70!dunkel, align=center, below=0.8cm of a]
+      {Paket \texttt{beamer}: Folien, Überblendungen, Themes,\\
+       alle Formeln, Plots und Zeichnungen inklusive.};
+  \end{tikzpicture}
+\end{frame}
+
+% =====================================================================
+\section{\LaTeX{} und KI}
+% =====================================================================
+
+\begin{frame}{Wofür KI bei \LaTeX{} hilfreich ist}
+  \begin{tcbraster}[raster columns=4, raster equal height, raster column skip=8pt]
+    \begin{karte}{Fehler}{verstehen}
+      Log-Ausschnitt einfügen und erklären lassen, was \LaTeX{} meint.
+    \end{karte}
+    \begin{karte}{Bilder}{zu Formeln}
+      Foto einer Rechnung oder Formel in \LaTeX-Code umwandeln.
+    \end{karte}
+    \begin{karte}{Gerüste}{erzeugen}
+      Tabellen, Präambeln, Plot-Grundgerüste, einfache TikZ-Grafiken.
+    \end{karte}
+    \begin{karte}{Befehle}{nachschlagen}
+      \glqq Wie setze ich \dots?\grqq{} statt lange Doku zu durchsuchen.
+    \end{karte}
+  \end{tcbraster}
+  \vspace{0.8em}
+  \begin{merke}
+    KI ersetzt nicht das Verständnis der Grundlagen: Wer weiß, was \texttt{align} oder \texttt{\textbackslash label} tun, erkennt auch, wann die Antwort falsch ist.
+  \end{merke}
+\end{frame}
+
+\begin{frame}{KI direkt in Overleaf}
+  \begin{columns}[T]
+    \begin{column}{0.53\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.35em}
+        \item \textbf{Error Assist:} erklärt Fehler und schlägt Lösungen vor
+        \item \textbf{Equation Generator:} Formel in Worten beschreiben, \LaTeX{} bekommen
+        \item \textbf{Table Generator:} Tabellen aus einer Beschreibung
+        \item \textbf{TeXGPT:} \LaTeX-Code aus normaler Sprache im Editor
+        \item \textbf{Writefull:} Sprachvorschläge für wissenschaftliches Englisch
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \begin{kasten}{Kostenloser Plan}
+        Begrenztes tägliches Kontingent für die KI-Funktionen. Der KI-Chat-Assistent ist nicht enthalten.
+      \end{kasten}
+      \vspace{0.4em}
+      {\scriptsize\color{grau}Stand: Oktober 2026, Details unter \texttt{docs.overleaf.com}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Grenzen und Fallstricke}
+  \begin{tcbraster}[raster columns=2, raster equal height, raster column skip=12pt, raster row skip=8pt]
+    \begin{karte}[akzent!70!red]{Erfundene Befehle}{Halluzinationen}
+      Pakete und Befehle, die es nicht gibt. Immer kompilieren und prüfen.
+    \end{karte}
+    \begin{karte}[akzent!70!red]{Erfundene Literatur}{BibTeX}
+      Quellen können frei erfunden sein. Jeden Eintrag selbst nachprüfen.
+    \end{karte}
+    \begin{karte}[grau]{Komplexe Grafiken}{TikZ}
+      Koordinaten und Layout gehen oft schief, Nacharbeit ist die Regel.
+    \end{karte}
+    \begin{karte}[grau]{Übungsblätter}{Eigenleistung}
+      Hilfe beim Setzen ist kein Problem, die Physik sollte von euch sein.
+    \end{karte}
+  \end{tcbraster}
+\end{frame}
+
+\begin{frame}{Live-Demo}
+  \zeittag{ca.\ 2 Min.}
+  \begin{enumerate}
+    \setlength{\itemsep}{0.6em}
+    \item Handschriftliche Formel fotografieren
+    \item Von einer KI in \LaTeX-Code umwandeln lassen
+    \item In Overleaf einfügen und kompilieren
+    \item Absichtlich einen Fehler einbauen und mit Error Assist erklären lassen
+  \end{enumerate}
+  \vspace{0.8em}
+  \begin{merke}
+    Ergebnis immer mit dem Original vergleichen: Indizes, Vorzeichen und Faktoren werden gerne verwechselt.
+  \end{merke}
+\end{frame}
+
+% =====================================================================
+\section{Abschluss}
+% =====================================================================
+
+\begin{frame}{Ressourcen}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Nachschlagen}
+        \begin{itemize}
+          \item \texttt{overleaf.com/learn}
+          \item Detexify (Symbol zeichnen)
+          \item \texttt{tex.stackexchange.com}
+          \item Wikibook \glqq\LaTeX-Kompendium\grqq
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Paket-Dokumentation}
+        \begin{itemize}
+          \item CTAN: \texttt{ctan.org}
+          \item Lokal: \texttt{texdoc siunitx}
+          \item TikZ-Beispiele: \texttt{texample.net}
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+  \end{columns}
+  \vspace{0.5em}
+  \begin{merke}
+    Am besten lernt man \LaTeX{} durch Benutzen: Schreibt die nächsten Übungsblätter damit.
+  \end{merke}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dunkel] (current page.south west) rectangle (current page.north east);
+    \node[text=white, font=\fontsize{46}{50}\selectfont\bfseries] (f)
+      at ([yshift=0.5cm]current page.center) {Fragen?};
+    \fill[akzent] ([yshift=-0.4cm, xshift=-1.2cm]f.south) rectangle ++(2.4cm,0.12cm);
+    \node[text=white!70!dunkel, font=\large, below=0.9cm of f] {Danke fürs Mitmachen!};
+  \end{tikzpicture}
+\end{frame}
+
+\end{document}
