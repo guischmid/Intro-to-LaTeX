@@ -1,2 +1,3 @@
-# Keep aux files out of the project root; PDF still lands next to the .tex
+# Keep aux files and PDFs out of the project root
 $aux_dir = 'build';
+$out_dir = 'pdf';
