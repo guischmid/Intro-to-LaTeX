@@ -1,0 +1,464 @@
+% =====================================================================
+%  Intro to LaTeX: Handout (Befehlsreferenz)
+%  jDPG Regionalgruppe Tübingen
+%  Kompilieren mit pdfLaTeX: latexmk -pdf handout.tex
+% =====================================================================
+\PassOptionsToPackage{table}{xcolor}
+\documentclass[a4paper,9pt]{scrartcl}
+
+% ---------------------------------------------------------------------
+%  Pakete
+% ---------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\IfFileExists{FiraSans.sty}{%
+  \usepackage[sfdefault,lining]{FiraSans}
+  \usepackage[scale=0.85]{FiraMono}}{%
+  \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}}
+\usepackage[a4paper, top=1.5cm, bottom=1.6cm, left=1.4cm, right=1.4cm,
+            headsep=0.5cm, headheight=12pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage[locale=DE]{siunitx}
+\usepackage{braket}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multicol}
+\usepackage{needspace}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage{scrlayer-scrpage}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+
+\setlength{\columnsep}{0.7cm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.25em}
+
+% ---------------------------------------------------------------------
+%  Farben (wie in den Folien)
+% ---------------------------------------------------------------------
+\definecolor{dunkel}{HTML}{16213E}
+\definecolor{akzent}{HTML}{E9A23B}
+\definecolor{blau}{HTML}{3D7EA6}
+\definecolor{hell}{HTML}{EDF1F5}
+\definecolor{grau}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{F2F4F7}
+\definecolor{rot}{HTML}{C2410C}
+
+% ---------------------------------------------------------------------
+%  Kopf- und Fußzeile
+% ---------------------------------------------------------------------
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+\setkomafont{pageheadfoot}{\scriptsize\color{grau}}
+\ihead{Intro to \LaTeX{} \,|\, Befehlsreferenz}
+\ohead{jDPG Regionalgruppe Tübingen}
+\cfoot{\pagemark}
+
+% ---------------------------------------------------------------------
+%  Bausteine
+% ---------------------------------------------------------------------
+% Abschnittsüberschrift
+\newcommand{\kopf}[1]{%
+  \par\needspace{7\baselineskip}\vspace{0.55em}%
+  \begin{tcolorbox}[enhanced, colback=dunkel, colframe=dunkel, arc=1.5pt,
+    boxrule=0pt, left=5pt, right=5pt, top=1.5pt, bottom=1.5pt,
+    fontupper=\sffamily\bfseries\small\color{white}, before skip=0pt, after skip=3pt]
+    #1
+  \end{tcolorbox}\nobreak}
+
+% Befehl in Schreibmaschinenschrift
+\newcommand{\bs}{\textbackslash}
+\newcommand{\cs}[1]{\texttt{\textbackslash #1}}
+
+% Symboltabelle: Befehl und Ausgabe
+\newcommand{\sym}[1]{\cs{#1} & $\csname #1\endcsname$}
+
+% Tabelle: Befehl | Ergebnis bzw. Beschreibung
+\newenvironment{reftab}[1][p{3.75cm}p{4.15cm}]
+  {\par\setlength{\tabcolsep}{3pt}\rowcolors{1}{white}{hell}\begin{tabular}{@{}#1@{}}}
+  {\end{tabular}\par}
+
+% Hinweis in Grau
+\newcommand{\hinweis}[1]{{\scriptsize\color{grau}#1}\par}
+
+% Code-Kasten
+\lstdefinestyle{latex}{
+  language=[LaTeX]TeX,
+  basicstyle=\ttfamily\scriptsize\color{dunkel},
+  commentstyle=\color{grau}\itshape,
+  texcsstyle=*\color{blue!55!black},
+  columns=fullflexible, keepspaces=true, breaklines=true,
+  showstringspaces=false,
+  literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+           {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1 {ß}{{\ss}}1
+}
+\lstdefinestyle{plain}{basicstyle=\ttfamily\scriptsize\color{dunkel},
+  columns=fullflexible, keepspaces=true}
+\newtcblisting{code}[1][]{enhanced, listing only, colback=codebg,
+  colframe=codebg, boxrule=0pt, arc=1.5pt, left=4pt, right=4pt, top=0pt,
+  bottom=0pt, before skip=2pt, after skip=4pt,
+  listing options={style=latex}, #1}
+
+% =====================================================================
+\begin{document}
+% =====================================================================
+\thispagestyle{empty}
+\footnotesize
+
+% ---------------------------------------------------------------------
+%  Titelzeile
+% ---------------------------------------------------------------------
+\begin{tcolorbox}[enhanced, colback=dunkel, colframe=dunkel, arc=2pt,
+  boxrule=0pt, left=10pt, right=10pt, top=7pt, bottom=7pt, before skip=0pt]
+  \color{white}
+  {\sffamily\bfseries\fontsize{20}{22}\selectfont Intro to \LaTeX}\hfill
+  {\sffamily\small\color{white!70!dunkel} Befehlsreferenz zum Nachschlagen}\par
+  \vspace{2pt}{\color{akzent}\rule{2.2cm}{2pt}}\hfill
+  {\scriptsize\color{white!60!dunkel} jDPG Regionalgruppe Tübingen}
+\end{tcolorbox}
+
+\begin{multicols}{2}
+
+% =====================================================================
+\kopf{Grundgerüst}
+\begin{code}[]
+\documentclass[a4paper,11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[locale=DE]{siunitx}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}  % zuletzt laden
+
+\title{Übungsblatt 1}
+\author{Max Mustermann}
+\date{\today}
+
+\begin{document}
+\maketitle
+...
+\end{document}
+\end{code}
+\hinweis{Klassen: \texttt{article}, \texttt{scrartcl} (KOMA, europäisch), \texttt{report}/\texttt{scrreprt} (mit Kapiteln), \texttt{beamer} (Folien)}
+
+% =====================================================================
+\kopf{Gliederung}
+\begin{reftab}
+  \cs{section\{\dots\}} & Abschnitt (1)\\
+  \cs{subsection\{\dots\}} & Unterabschnitt (1.1)\\
+  \cs{subsubsection\{\dots\}} & Unter-Unterabschnitt (1.1.1)\\
+  \cs{section*\{\dots\}} & ohne Nummer\\
+  \cs{chapter\{\dots\}} & Kapitel (nur report, book)\\
+  \cs{tableofcontents} & Inhaltsverzeichnis\\
+  \cs{appendix} & ab hier Anhang (A, B, \dots)\\
+  \cs{input\{datei\}} & andere \texttt{.tex}-Datei einfügen\\
+\end{reftab}
+
+% =====================================================================
+\kopf{Text}
+\begin{reftab}
+  \cs{emph\{\dots\}} & \emph{betont}\\
+  \cs{textbf\{\dots\}} & \textbf{fett}\\
+  \cs{textit\{\dots\}} & \textit{kursiv}\\
+  \cs{texttt\{\dots\}} & \texttt{Schreibmaschine}\\
+  \cs{textsc\{\dots\}} & \textsc{Kapitälchen}\\
+  \cs{underline\{\dots\}} & \underline{unterstrichen}\\
+  \cs{footnote\{\dots\}} & Fußnote\\
+  Leerzeile & neuer Absatz\\
+  \texttt{\bs\bs} & Zeilenumbruch\\
+  \cs{newpage} & neue Seite\\
+  \texttt{\textasciitilde} & geschütztes Leerzeichen\\
+  \cs{,} & schmales Leerzeichen (z.\,B.)\\
+  \texttt{-{}-} & Bis-Strich: 3--5\\
+  \cs{glqq}\,\dots\,\cs{grqq} & \glqq Anführungszeichen\grqq\\
+  \cs{dots} & \dots\\
+  \texttt{\%} & Kommentar bis Zeilenende\\
+\end{reftab}
+\hinweis{Schriftgrößen: \cs{tiny} \cs{scriptsize} \cs{footnotesize} \cs{small} \cs{normalsize} \cs{large} \cs{Large} \cs{LARGE} \cs{huge} \cs{Huge}}
+
+% =====================================================================
+\kopf{Sonderzeichen}
+\begin{reftab}[p{1.2cm}p{1.2cm}p{2.7cm}p{2.8cm}]
+  \cs{\#} & \# & \cs{\_} & \_\\
+  \cs{\$} & \$ & \cs{\{} \cs{\}} & \{ \}\\
+  \cs{\%} & \% & \cs{textbackslash} & \textbackslash\\
+  \cs{\&} & \& & \cs{textasciitilde} & \textasciitilde\\
+\end{reftab}
+
+% =====================================================================
+\kopf{Listen}
+\begin{code}[]
+\begin{itemize}       % Stichpunkte
+  \item Punkt
+\end{itemize}
+\begin{enumerate}     % nummeriert
+  \item Erstens
+\end{enumerate}
+\begin{description}   % mit Begriffen
+  \item[Masse] in kg
+\end{description}
+\end{code}
+\hinweis{Teilaufgaben a), b), c): Paket \texttt{enumitem}, dann \cs{begin\{enumerate\}[a)]}}
+
+% =====================================================================
+\kopf{Verweise}
+\begin{reftab}
+  \cs{label\{eq:name\}} & Markierung setzen\\
+  \cs{ref\{eq:name\}} & Nummer: 3\\
+  \cs{eqref\{eq:name\}} & Gleichungsnummer: (3)\\
+  \cs{pageref\{eq:name\}} & Seitenzahl\\
+  \cs{cref\{eq:name\}} & \glqq Gleichung (3)\grqq{} (\texttt{cleveref})\\
+  \cs{url\{\dots\}} & Link (\texttt{hyperref})\\
+  \cs{href\{url\}\{Text\}} & Link mit Text\\
+\end{reftab}
+\hinweis{Bei Abbildungen \cs{label} nach \cs{caption}. Erscheint \textbf{??}, noch einmal kompilieren.}
+
+% =====================================================================
+\kopf{Abbildungen}
+\begin{code}[]
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{bild.pdf}
+  \caption{Beschriftung}
+  \label{fig:bild}
+\end{figure}
+\end{code}
+\hinweis{\texttt{[htbp]}: here, top, bottom, page. Plots als PDF, Fotos als PNG oder JPG.}
+
+% =====================================================================
+\kopf{Tabellen}
+\begin{code}[]
+\begin{table}[htbp]
+  \centering
+  \caption{Messwerte}
+  \begin{tabular}{lcS}   % S: am Komma ausrichten
+    \toprule
+    Nr. & $l$ / \unit{m} & {$T$ / \unit{s}} \\
+    \midrule
+    1   & 0,50           & 1,42 \\
+    2   & 1,00           & 2,01 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\end{code}
+\hinweis{Spalten: \texttt{l} links, \texttt{c} zentriert, \texttt{r} rechts, \texttt{p\{3cm\}} feste Breite, \texttt{S} Zahlen (\texttt{siunitx}). \texttt{\&} trennt Spalten.}
+
+% =====================================================================
+\kopf{Literatur (\texttt{biblatex})}
+\begin{code}[]
+\usepackage[backend=biber,style=numeric]{biblatex}
+\addbibresource{literatur.bib}       % Präambel
+... wie in \cite{einstein1905} ...   % im Text
+\printbibliography                   % am Ende
+\end{code}
+\hinweis{BibTeX-Einträge aus Google Scholar, arXiv, INSPIRE oder über die DOI mit doi2bib.org. Physik-Stil: \texttt{style=phys}.}
+
+% =====================================================================
+\kopf{Mathemodus}
+\begin{reftab}[p{3.4cm}p{4.5cm}]
+  \texttt{\$\,\dots\$} & im Text\\
+  \texttt{\bs[\,\dots\bs]} & abgesetzt, ohne Nummer\\
+  \texttt{equation} & abgesetzt, mit Nummer\\
+  \texttt{align} & mehrzeilig, an \texttt{\&} ausgerichtet\\
+  \texttt{gather} & mehrzeilig, zentriert\\
+  \texttt{equation}\,+\,\texttt{split} & mehrzeilig, eine Nummer\\
+  \texttt{align*}, \texttt{equation*} & ohne Nummer\\
+  \cs{nonumber} & Zeile ohne Nummer\\
+\end{reftab}
+\begin{code}[]
+\begin{align}
+  E &= E_\text{kin} + E_\text{pot} \\
+    &= \frac{1}{2} m v^2 + m g h
+\end{align}
+\end{code}
+\hinweis{Nicht verwenden: \texttt{\$\$\,\dots\$\$} und \texttt{eqnarray}. Keine Leerzeilen in Formeln.}
+
+% =====================================================================
+\kopf{Grundbausteine}
+\begin{reftab}[p{3.6cm}p{1.35cm}p{2.95cm}]
+  \texttt{x\textasciicircum 2}, \texttt{x\_i} & $x^2$, $x_i$ & \\
+  \texttt{x\textasciicircum\{2n\}}, \texttt{x\_\{ij\}} & $x^{2n}$, $x_{ij}$ & mehrere Zeichen: \texttt{\{\,\}}\\
+  \cs{frac\{a\}\{b\}} & $\frac{a}{b}$ & \cs{tfrac}, \cs{dfrac}\\
+  \cs{sqrt\{x\}}, \cs{sqrt[3]\{x\}} & $\sqrt{x}$, $\sqrt[3]{x}$ & \\
+  \cs{int\_a\textasciicircum b} & $\int_a^b$ & \cs{iint}, \cs{oint}\\
+  \cs{sum\_\{n=1\}\textasciicircum N} & $\sum_{n=1}^N$ & \cs{prod}\\
+  \cs{lim\_\{x \bs to 0\}} & $\lim_{x \to 0}$ & \\
+  \cs{partial}, \cs{nabla} & $\partial$, $\nabla$ & \\
+  \cs{infty}, \cs{hbar}, \cs{ell} & $\infty$, $\hbar$, $\ell$ & \\
+  \cs{cdot}, \cs{times} & $\cdot$, $\times$ & \\
+  \cs{dots}, \cs{cdots}, \cs{vdots} & $\dots$, $\cdots$, $\vdots$ & \cs{ddots}\\
+  \cs{text\{für\}} & $\text{für}$ & Text in Formeln\\
+\end{reftab}
+
+\textbf{Funktionen} (aufrecht, mit Backslash):\\
+\cs{sin} \cs{cos} \cs{tan} \cs{arcsin} \cs{sinh} \cs{exp} \cs{ln} \cs{log} \cs{det} \cs{max} \cs{min} \cs{lim} \cs{arg}\\
+\hinweis{Eigener Operator in der Präambel: \cs{DeclareMathOperator\{\bs Tr\}\{Tr\}}}
+
+% =====================================================================
+\kopf{Griechische Buchstaben}
+\begin{reftab}[p{1.45cm}p{0.35cm}p{1.55cm}p{0.35cm}p{1.55cm}p{0.35cm}p{1.3cm}p{0.3cm}]
+  \sym{alpha} & \sym{eta} & \sym{nu} & \sym{tau}\\
+  \sym{beta} & \sym{theta} & \sym{xi} & \sym{phi}\\
+  \sym{gamma} & \sym{vartheta} & \sym{pi} & \sym{varphi}\\
+  \sym{delta} & \sym{iota} & \sym{rho} & \sym{chi}\\
+  \sym{epsilon} & \sym{kappa} & \sym{varrho} & \sym{psi}\\
+  \sym{varepsilon} & \sym{lambda} & \sym{sigma} & \sym{omega}\\
+  \sym{zeta} & \sym{mu} & \sym{upsilon} & & \\
+  \sym{Gamma} & \sym{Lambda} & \sym{Sigma} & \sym{Psi}\\
+  \sym{Delta} & \sym{Xi} & \sym{Phi} & \sym{Omega}\\
+  \sym{Theta} & \sym{Pi} & & & & \\
+\end{reftab}
+\hinweis{Großbuchstaben wie A, B, E einfach als lateinische Buchstaben schreiben.}
+
+% =====================================================================
+\kopf{Relationen und Operatoren}
+\begin{reftab}[p{1.45cm}p{0.35cm}p{1.55cm}p{0.35cm}p{1.55cm}p{0.35cm}p{1.3cm}p{0.3cm}]
+  \sym{neq} & \sym{leq} & \sym{pm} & \sym{in}\\
+  \sym{approx} & \sym{geq} & \sym{mp} & \sym{notin}\\
+  \sym{sim} & \sym{ll} & \sym{propto} & \sym{subset}\\
+  \sym{simeq} & \sym{gg} & \sym{perp} & \sym{cup}\\
+  \sym{equiv} & \sym{coloneqq} & \sym{parallel} & \sym{cap}\\
+  \sym{forall} & \sym{exists} & \sym{circ} & \sym{emptyset}\\
+\end{reftab}
+\hinweis{\cs{coloneqq} (Definition) aus \texttt{mathtools}. Durchstreichen mit \cs{not}: \cs{not\bs equiv} ergibt $\not\equiv$.}
+
+% =====================================================================
+\kopf{Pfeile}
+\begin{reftab}[p{2.2cm}p{0.5cm}p{2.4cm}p{0.5cm}p{1.5cm}p{0.3cm}]
+  \sym{to} & \sym{Rightarrow} & \sym{mapsto}\\
+  \sym{leftarrow} & \sym{Leftarrow} & \sym{uparrow}\\
+  \sym{leftrightarrow} & \sym{Leftrightarrow} & \sym{downarrow}\\
+  \sym{longrightarrow} & \sym{rightleftharpoons} & \sym{nearrow}\\
+\end{reftab}
+
+% =====================================================================
+\kopf{Akzente und Schriften}
+\begin{reftab}[p{2.6cm}p{1.1cm}p{2.9cm}p{1.3cm}]
+  \cs{vec\{v\}} & $\vec{v}$ & \cs{mathbf\{F\}} & $\mathbf{F}$\\
+  \cs{hat\{H\}} & $\hat{H}$ & \cs{boldsymbol\{\bs omega\}} & $\boldsymbol{\omega}$\\
+  \cs{dot\{x\}}, \cs{ddot\{x\}} & $\dot{x}$, $\ddot{x}$ & \cs{mathrm\{d\}} & $\mathrm{d}$\\
+  \cs{bar\{x\}} & $\bar{x}$ & \cs{mathcal\{L\}} & $\mathcal{L}$\\
+  \cs{tilde\{x\}} & $\tilde{x}$ & \cs{mathbb\{R\}} & $\mathbb{R}$\\
+  \cs{overline\{AB\}} & $\overline{AB}$ & \cs{mathit\{xy\}} & $\mathit{xy}$\\
+  \texttt{f'}, \texttt{x\textasciicircum *} & $f'$, $x^*$ & \texttt{x\textasciicircum\bs dagger} & $x^\dagger$\\
+  \cs{underbrace\{x\}\_\{n\}} & $\underbrace{x}_{n}$ & \cs{overbrace\{x\}\textasciicircum\{n\}} & $\overbrace{x}^{n}$\\
+\end{reftab}
+
+% =====================================================================
+\kopf{Klammern}
+\begin{reftab}[p{4.5cm}p{3.4cm}]
+  \texttt{\bs left(\,\dots\bs right)} & wachsen mit: $\left(\frac{a}{b}\right)$\\
+  \texttt{\bs left[\,\dots\bs right]} & $\left[\frac{a}{b}\right]$\\
+  \texttt{\bs left\bs\{\,\dots\bs right\bs\}} & $\left\{\frac{a}{b}\right\}$\\
+  \texttt{\bs left|\,\dots\bs right|} & Betrag: $\left|\frac{a}{b}\right|$\\
+  \texttt{\bs left\bs|\,\dots\bs right\bs|} & Norm: $\left\|\vec{v}\right\|$\\
+  \cs{langle}\,\dots\,\cs{rangle} & $\langle x \rangle$\\
+  \cs{braket\{\bs psi|\bs phi\}} & $\braket{\psi|\phi}$ (\texttt{braket})\\
+  \cs{ket\{\bs psi\}}, \cs{bra\{\bs psi\}} & $\ket{\psi}$, $\bra{\psi}$\\
+  \texttt{\bs left.\,\dots\bs right|\_\{0\}} & $\left.\frac{a}{b}\right|_{0}$\\
+  \cs{big}, \cs{Big}, \cs{bigg}, \cs{Bigg} & feste Größen: $\big( \Big( \bigg( \Bigg($\\
+\end{reftab}
+
+% =====================================================================
+\kopf{Abstände in Formeln}
+\begin{reftab}[p{1.0cm}p{1.2cm}p{1.0cm}p{1.2cm}p{2.9cm}]
+  \cs{,} & $a\,b$ & & \cs{quad} & $a\quad b$\\
+  \cs{;} & $a\;b$ & & \cs{qquad} & $a\qquad b$\\
+  \cs{!} & $a\!b$ & & & \\
+\end{reftab}
+\hinweis{Differential: \texttt{\bs int f(x) \bs,\bs mathrm\{d\}x} ergibt $\int f(x)\,\mathrm{d}x$}
+
+% =====================================================================
+\begin{minipage}{\linewidth}
+\kopf{Fallunterscheidungen und Matrizen}
+\begin{code}[]
+f(x) = \begin{cases}
+  0 & \text{für } x < 0 \\
+  1 & \text{sonst}
+\end{cases}
+
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}
+\end{code}
+\begin{reftab}[p{1.6cm}p{1.6cm}p{1.6cm}p{1.6cm}p{1.2cm}]
+  \texttt{pmatrix} & \texttt{bmatrix} & \texttt{Bmatrix} & \texttt{vmatrix} & \texttt{matrix}\\
+  $\begin{pmatrix} a & b \\ c & d \end{pmatrix}$ &
+  $\begin{bmatrix} a & b \\ c & d \end{bmatrix}$ &
+  $\begin{Bmatrix} a & b \\ c & d \end{Bmatrix}$ &
+  $\begin{vmatrix} a & b \\ c & d \end{vmatrix}$ &
+  $\begin{matrix} a & b \\ c & d \end{matrix}$\\
+\end{reftab}
+\end{minipage}
+
+% =====================================================================
+\kopf{Zahlen und Einheiten (\texttt{siunitx})}
+\begin{reftab}[p{4.5cm}p{3.4cm}]
+  \cs{num\{6.022e23\}} & \num{6.022e23}\\
+  \cs{unit\{\bs metre\bs per\bs second\}} & \unit{\metre\per\second}\\
+  \cs{qty\{9.81\}\{\bs m\bs per\bs s\bs squared\}} & \qty{9.81}{\m\per\s\squared}\\
+  \cs{qty\{2.04(3)\}\{\bs second\}} & \qty{2.04(3)}{\second}\\
+  \cs{qty\{2.04 \bs pm 0.03\}\{\bs s\}} & \qty{2.04 \pm 0.03}{\s}\\
+  \cs{qty\{1.38e-23\}\{\bs J\bs per\bs K\}} & \qty{1.38e-23}{\J\per\K}\\
+  \cs{qtyrange\{20\}\{25\}\{\bs celsius\}} & \qtyrange{20}{25}{\celsius}\\
+  \cs{ang\{45\}} & \ang{45}\\
+\end{reftab}
+\begin{reftab}[p{1.3cm}p{2.3cm}p{1.3cm}p{2.9cm}]
+  \textbf{Präfix} & & \textbf{Einheit} & \\
+  \cs{nano} & n & \cs{metre} & m \quad (\cs{m})\\
+  \cs{micro} & $\mu$ & \cs{second} & s \quad (\cs{s})\\
+  \cs{milli} & m & \cs{gram} & g \quad (\cs{g})\\
+  \cs{centi} & c & \cs{kelvin} & K \quad (\cs{K})\\
+  \cs{kilo} & k & \cs{joule} & J \quad (\cs{J})\\
+  \cs{mega} & M & \cs{volt} & V\\
+  \cs{giga} & G & \cs{ohm} & $\Omega$\\
+  \cs{per} & Bruch & \cs{squared} & \textsuperscript{2}\\
+\end{reftab}
+\hinweis{Achtung: Das Paket \texttt{physics} überschreibt \cs{qty}. Für Dirac-Notation besser \texttt{braket} nutzen.}
+
+% =====================================================================
+\kopf{Eigene Befehle (Präambel)}
+\begin{code}[]
+\newcommand{\diff}{\mathrm{d}}            % ohne Argument
+\newcommand{\abl}[2]{\frac{\diff #1}{\diff #2}}  % zwei Argumente
+\DeclareMathOperator{\Tr}{Tr}              % Operator
+\end{code}
+\hinweis{Verwendung: \texttt{\$\bs abl\{x\}\{t\}\$} ergibt $\frac{\mathrm{d}x}{\mathrm{d}t}$}
+
+% =====================================================================
+\kopf{Häufige Fehlermeldungen}
+\begin{reftab}[p{3.2cm}p{4.7cm}]
+  \texttt{Missing \$ inserted} & Mathebefehl außerhalb von \texttt{\$\,\dots\$}, oder \texttt{\_} im Text\\
+  \texttt{Undefined control sequence} & Tippfehler oder Paket fehlt\\
+  \texttt{Environment \dots\ undefined} & Paket fehlt (\texttt{align}: \texttt{amsmath})\\
+  \texttt{Missing \} inserted} & Klammer vergessen\\
+  \texttt{Misplaced alignment tab \&} & \texttt{\&} im Text: \cs{\&} schreiben\\
+  \texttt{File \dots\ not found} & Paket nicht installiert oder Dateiname falsch\\
+  \texttt{Reference undefined} & neu kompilieren oder Label prüfen\\
+  \texttt{Overfull \bs hbox} & Zeile zu lang, meist unkritisch\\
+\end{reftab}
+\hinweis{Immer zuerst den \textbf{ersten} Fehler beheben. \texttt{l.12} in der Meldung ist die Zeilennummer.}
+
+% =====================================================================
+\kopf{Tastenkürzel in Overleaf}
+\begin{reftab}[p{2.6cm}p{5.3cm}]
+  \texttt{Strg + Enter} & Kompilieren\\
+  \texttt{Strg + B} / \texttt{Strg + I} & Fett / kursiv\\
+  \texttt{Strg + /} & Zeile(n) auskommentieren\\
+  Doppelklick ins PDF & zur Stelle im Quelltext springen\\
+\end{reftab}
+\hinweis{Auf macOS jeweils \texttt{Cmd} statt \texttt{Strg}.}
+
+% =====================================================================
+\kopf{Links}
+\begin{reftab}[p{2.6cm}p{5.3cm}]
+  Symbol suchen & \href{https://detexify.kirelabs.org/classify.html}{\texttt{detexify.kirelabs.org}}\\
+  Tutorials & \href{https://www.overleaf.com/learn}{\texttt{overleaf.com/learn}}\\
+  Fragen & \href{https://tex.stackexchange.com}{\texttt{tex.stackexchange.com}}\\
+  Paketdokumentation & \href{https://ctan.org}{\texttt{ctan.org}} \quad oder \texttt{texdoc paket}\\
+  Tabellen erzeugen & \href{https://www.tablesgenerator.com}{\texttt{tablesgenerator.com}}\\
+\end{reftab}
+
+\end{multicols}
+\end{document}
