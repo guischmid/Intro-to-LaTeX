@@ -1,6 +1,6 @@
 # Intro to LaTeX
 
-Materialien zum Workshop **Intro to LaTeX** der jDPG Regionalgruppe Tübingen für Physik-Erstsemester. Hier findet ihr die Folien, das Handout, Vorlagen zum Weiterarbeiten und eine Sammlung nützlicher Links.
+Materialien zum Workshop **Intro to LaTeX** der jDPG Regionalgruppe Tübingen für LaTeX Anfänger. Hier findet ihr die Folien, das Handout, Vorlagen zum Weiterarbeiten und eine Sammlung nützlicher Links.
 
 ## Materialien
 
