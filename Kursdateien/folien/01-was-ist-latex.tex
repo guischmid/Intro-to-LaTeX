@@ -1,0 +1,81 @@
+% =====================================================================
+\section{Was ist \LaTeX?}
+% =====================================================================
+
+\begin{frame}{Markup statt WYSIWYG}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Word, LibreOffice, \dots}
+        \begin{itemize}
+          \item \emph{What You See Is What You Get}
+          \item Formatierung direkt beim Schreiben
+          \item Layout liegt in eurer Verantwortung
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{\LaTeX}
+        \begin{itemize}
+          \item Ihr beschreibt die \alert{Struktur}
+          \item \LaTeX{} übernimmt das \alert{Layout}
+          \item Inhalt und Form sind getrennt
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+  \end{columns}
+  \vspace{0.6em}
+  \begin{merke}
+    Ihr schreibt \texttt{\textbackslash section\{Einleitung\}}, nicht
+    \glqq Arial, 14\,pt, fett, Abstand 12\,pt\grqq.
+  \end{merke}
+\end{frame}
+
+\begin{frame}{Vom Quelltext zum PDF}
+  \centering
+  \vspace{1em}
+  \begin{tikzpicture}[
+      box/.style={rounded corners=5pt, fill=white, draw=hell, line width=1pt,
+                  minimum width=3.2cm, minimum height=1.6cm, align=center},
+      pfeil/.style={-{Stealth[length=3.5mm]}, line width=1.6pt, akzent}]
+    \node[box] (tex) {\textbf{\texttt{bericht.tex}}\\[3pt]\scriptsize\color{grau}Quelltext};
+    \node[box, right=1.6cm of tex, fill=dunkel, draw=dunkel, text=white] (comp)
+      {\textbf{\texttt{pdflatex}}\\[3pt]\scriptsize\color{white!70!dunkel}Compiler};
+    \node[box, right=1.6cm of comp] (pdf) {\textbf{\texttt{bericht.pdf}}\\[3pt]\scriptsize\color{grau}Ergebnis};
+    \draw[pfeil] (tex) -- (comp);
+    \draw[pfeil] (comp) -- (pdf);
+    \node[below=0.5cm of comp, text=grau, font=\scriptsize]
+      {Nebenprodukte: \texttt{.aux}, \texttt{.log}, \texttt{.toc}, \dots};
+  \end{tikzpicture}
+  \vspace{1.5em}
+  \begin{itemize}
+    \item Ähnlich wie beim Programmieren: schreiben, kompilieren, Ergebnis ansehen
+    \item Fehler stehen in der \texttt{.log}-Datei bzw.\ im Editor
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Geschichte und Relevanz}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \textbf{Geschichte}\par\vspace{0.4em}
+      \begin{itemize}
+        \item \alert{1978:} Donald Knuth entwickelt \TeX, weil ihm der Satz seiner Bücher nicht gefällt
+        \item \alert{1984:} Leslie Lamport baut \LaTeX{} als Makropaket darauf
+        \item \alert{Heute:} \LaTeXe{} plus tausende Pakete auf CTAN
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \textbf{Warum in der Physik?}\par\vspace{0.4em}
+      \begin{itemize}
+        \item Formelsatz in hoher Qualität
+        \item Standard für Paper, arXiv und Abschlussarbeiten
+        \item Skripte und Übungsblätter sind damit gesetzt
+        \item Kostenlos, plattformunabhängig, reine Textdateien
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vspace{0.3em}
+  \begin{tcolorbox}[enhanced, colback=white, colframe=hell, boxrule=0.8pt, arc=4pt, halign=center]
+    $\displaystyle i\hbar\frac{\partial}{\partial t}\Psi(\mathbf{r},t)
+      = \left[-\frac{\hbar^2}{2m}\nabla^2 + V(\mathbf{r},t)\right]\Psi(\mathbf{r},t)$
+  \end{tcolorbox}
+\end{frame}

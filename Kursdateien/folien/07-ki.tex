@@ -1,0 +1,78 @@
+% =====================================================================
+\section{\LaTeX{} und KI}
+% =====================================================================
+
+\begin{frame}{Wofür KI bei \LaTeX{} hilfreich ist}
+  \begin{tcbraster}[raster columns=4, raster equal height, raster column skip=8pt]
+    \begin{karte}{Fehler}{verstehen}
+      Log-Ausschnitt einfügen und erklären lassen, was \LaTeX{} meint.
+    \end{karte}
+    \begin{karte}{Bilder}{zu Formeln}
+      Foto einer Rechnung oder Formel in \LaTeX-Code umwandeln.
+    \end{karte}
+    \begin{karte}{Gerüste}{erzeugen}
+      Tabellen, Präambeln, Plot-Grundgerüste, einfache TikZ-Grafiken.
+    \end{karte}
+    \begin{karte}{Befehle}{nachschlagen}
+      \glqq Wie setze ich \dots?\grqq{} statt lange Doku zu durchsuchen.
+    \end{karte}
+  \end{tcbraster}
+  \vspace{0.8em}
+  \begin{merke}
+    KI ersetzt nicht das Verständnis der Grundlagen: Wer weiß, was \texttt{align} oder \texttt{\textbackslash label} tun, erkennt auch, wann die Antwort falsch ist.
+  \end{merke}
+\end{frame}
+
+\begin{frame}{KI direkt in Overleaf}
+  \begin{columns}[T]
+    \begin{column}{0.53\textwidth}
+      \begin{itemize}
+        \setlength{\itemsep}{0.35em}
+        \item \textbf{Error Assist:} erklärt Fehler und schlägt Lösungen vor
+        \item \textbf{Equation Generator:} Formel in Worten beschreiben, \LaTeX{} bekommen
+        \item \textbf{Table Generator:} Tabellen aus einer Beschreibung
+        \item \textbf{TeXGPT:} \LaTeX-Code aus normaler Sprache im Editor
+        \item \textbf{Writefull:} Sprachvorschläge für wissenschaftliches Englisch
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \begin{kasten}{Kostenloser Plan}
+        Begrenztes tägliches Kontingent für die KI-Funktionen. Der KI-Chat-Assistent ist nicht enthalten.
+      \end{kasten}
+      \vspace{0.4em}
+      {\scriptsize\color{grau}Stand: Oktober 2026, Details unter \texttt{docs.overleaf.com}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Grenzen und Fallstricke}
+  \begin{tcbraster}[raster columns=2, raster equal height, raster column skip=12pt, raster row skip=8pt]
+    \begin{karte}[akzent!70!red]{Erfundene Befehle}{Halluzinationen}
+      Pakete und Befehle, die es nicht gibt. Immer kompilieren und prüfen.
+    \end{karte}
+    \begin{karte}[akzent!70!red]{Erfundene Literatur}{BibTeX}
+      Quellen können frei erfunden sein. Jeden Eintrag selbst nachprüfen.
+    \end{karte}
+    \begin{karte}[grau]{Komplexe Grafiken}{TikZ}
+      Koordinaten und Layout gehen oft schief, Nacharbeit ist die Regel.
+    \end{karte}
+    \begin{karte}[grau]{Übungsblätter}{Eigenleistung}
+      Hilfe beim Setzen ist kein Problem, die Physik sollte von euch sein.
+    \end{karte}
+  \end{tcbraster}
+\end{frame}
+
+\begin{frame}{Live-Demo}
+  \zeittag{ca.\ 2 Min.}
+  \begin{enumerate}
+    \setlength{\itemsep}{0.6em}
+    \item Handschriftliche Formel fotografieren
+    \item Von einer KI in \LaTeX-Code umwandeln lassen
+    \item In Overleaf einfügen und kompilieren
+    \item Absichtlich einen Fehler einbauen und mit Error Assist erklären lassen
+  \end{enumerate}
+  \vspace{0.8em}
+  \begin{merke}
+    Ergebnis immer mit dem Original vergleichen: Indizes, Vorzeichen und Faktoren werden gerne verwechselt.
+  \end{merke}
+\end{frame}

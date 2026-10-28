@@ -1,0 +1,80 @@
+% =====================================================================
+\section{Mathematik}
+% =====================================================================
+
+\begin{frame}[fragile]{Inline und abgesetzt}
+\begin{codeerg}
+Die Kraft ist $F = m a$.
+
+\[ E = \frac{1}{2} m v^2 \]
+
+\begin{equation}
+  \nabla \cdot \vec{E}
+    = \frac{\rho}{\varepsilon_0}
+  \label{eq:gauss}
+\end{equation}
+Siehe Gleichung~\eqref{eq:gauss}.
+\end{codeerg}
+\end{frame}
+
+\begin{frame}{Die wichtigsten Bausteine}
+  \centering
+  \rowcolors{2}{papier}{hell}
+  \begin{tabular}{@{}lc@{\hspace{3em}}lc@{}}
+    \toprule
+    \textbf{Eingabe} & \textbf{Ausgabe} & \textbf{Eingabe} & \textbf{Ausgabe}\\
+    \midrule
+    \texttt{x\^{}2, x\_i} & $x^2,\ x_i$ & \texttt{\textbackslash alpha, \textbackslash Omega} & $\alpha,\ \Omega$\\
+    \texttt{\textbackslash frac\{a\}\{b\}} & $\frac{a}{b}$ & \texttt{\textbackslash vec\{v\}} & $\vec{v}$\\
+    \texttt{\textbackslash sqrt\{x\}} & $\sqrt{x}$ & \texttt{\textbackslash partial} & $\partial$\\
+    \texttt{\textbackslash int\_0\^{}\textbackslash infty} & $\int_0^\infty$ & \texttt{\textbackslash nabla} & $\nabla$\\
+    \texttt{\textbackslash sum\_\{n=1\}\^{}N} & $\sum_{n=1}^N$ & \texttt{\textbackslash hbar} & $\hbar$\\
+    \texttt{\textbackslash left( \textbackslash frac\{a\}\{b\} \textbackslash right)} & $\left(\frac{a}{b}\right)$ & \texttt{\textbackslash cdot, \textbackslash times} & $\cdot,\ \times$\\
+    \bottomrule
+  \end{tabular}
+  \vspace{1em}
+
+  \begin{merke}
+    Symbol vergessen? \textbf{Detexify}: Symbol zeichnen, Befehl bekommen.
+  \end{merke}
+\end{frame}
+
+\begin{frame}[fragile]{Mehrzeilige Gleichungen mit \texttt{align}}
+  \begin{columns}[c]
+    \begin{column}{0.55\textwidth}
+\begin{code}
+\begin{align}
+  E &= E_\text{kin} + E_\text{pot} \\
+    &= \frac{1}{2} m v^2 + m g h
+\end{align}
+\end{code}
+    \end{column}
+    \begin{column}{0.41\textwidth}
+      \begin{bildkarte}
+        \vspace{-0.6em}
+        \begin{align}
+          E &= E_\text{kin} + E_\text{pot} \\
+            &= \frac{1}{2} m v^2 + m g h
+        \end{align}
+      \end{bildkarte}
+    \end{column}
+  \end{columns}
+  \vspace{0.8em}
+  \begin{itemize}
+    \item \texttt{\&} markiert die Stelle, an der ausgerichtet wird
+    \item \texttt{\textbackslash\textbackslash} beendet die Zeile, \texttt{align*} verzichtet auf Nummern
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Zahlen und Einheiten mit \texttt{siunitx}}
+  \small Präambel: \texttt{\textbackslash usepackage[locale=DE]\{siunitx\}}. Korrekte Abstände, aufrechte Einheiten, Dezimalkomma und Unsicherheiten.\par\vspace{0.4em}
+\begin{codeerg}
+$g = \qty{9.81}{\metre\per\second\squared}$
+
+$\lambda = \qty{632.8}{\nano\metre}$
+
+$h = \qty{6.626e-34}{\joule\second}$
+
+$T = \qty{2.04(3)}{\second}$
+\end{codeerg}
+\end{frame}

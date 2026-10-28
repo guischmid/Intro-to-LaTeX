@@ -1,0 +1,35 @@
+% =====================================================================
+\section{Praxisteil}
+% =====================================================================
+
+\begin{frame}{Aufgabe 1: Eure Übungsblatt-Vorlage}
+  \zeittag{ca.\ 12 Min.}
+  \begin{kasten}{Ziel}
+    Eine Vorlage, die ihr ab sofort für eure Abgaben nutzen könnt.
+  \end{kasten}
+  \vspace{0.3em}
+  \begin{enumerate}
+    \setlength{\itemsep}{0.4em}
+    \item Neues Projekt in Overleaf anlegen oder die Vorlage kopieren
+    \item Titel mit Name, Matrikelnummer, Übungsgruppe und Blattnummer
+    \item Aufgaben als \texttt{\textbackslash section*\{Aufgabe 1\}} mit Teilaufgaben a), b), c)
+    \item Pakete laden: \texttt{babel}, \texttt{amsmath}, \texttt{siunitx}
+    \item Eine Rechnung mit \texttt{align} und ein Ergebnis mit Einheit einfügen
+  \end{enumerate}
+  \vspace{0.4em}
+  \pill[blau]{Bonus} \small Kopf- und Fußzeile mit \texttt{fancyhdr}, eigenes Makro mit \texttt{\textbackslash newcommand}
+\end{frame}
+
+\begin{frame}{Aufgabe 2: Formel-Challenge}
+  \zeittag{ca.\ 12 Min.}
+  Setzt die Formeln so genau wie möglich nach:
+  \vspace{0.6em}
+
+  \renewcommand{\arraystretch}{2.3}
+  \begin{tabular}{@{}l@{\hspace{1.2em}}l@{}}
+    \pill[blau!60]{Level 1} & $\displaystyle F = m a, \qquad E = m c^2, \qquad p = \frac{h}{\lambda}$\\
+    \pill[blau]{Level 2} & $\displaystyle \nabla \times \vec{B} = \mu_0 \vec{j} + \mu_0 \varepsilon_0 \frac{\partial \vec{E}}{\partial t}$\\
+    \pill[akzent]{Level 3} & $\displaystyle \langle x \rangle = \int_{-\infty}^{\infty} \psi^*(x)\, x\, \psi(x) \,\mathrm{d}x$\\
+    \pill[akzent!70!red]{Level 4} & $\displaystyle Z = \sum_{n=0}^{\infty} \exp\left(-\frac{E_n}{k_\mathrm{B} T}\right), \qquad E_n = \hbar\omega\left(n + \frac{1}{2}\right)$
+  \end{tabular}
+\end{frame}

@@ -1,0 +1,75 @@
+% =====================================================================
+\section{Optionen}
+% =====================================================================
+
+\begin{frame}{Wo schreibe ich \LaTeX?}
+  \small
+  \begin{tcbraster}[raster columns=3, raster equal height, raster column skip=10pt]
+    \begin{karte}{Overleaf}{im Browser}
+      \textbf{Vorteile}
+      \begin{itemize}
+        \item Keine Installation
+        \item Echtzeit-Kollaboration
+        \item Viele Vorlagen
+      \end{itemize}
+      \textbf{Nachteile}
+      \begin{itemize}
+        \item Internet nötig
+        \item Gratis-Version begrenzt
+      \end{itemize}
+    \end{karte}
+    \begin{karte}{Lokal}{auf dem eigenen Rechner}
+      \textbf{Vorteile}
+      \begin{itemize}
+        \item Offline und schnell
+        \item Volle Kontrolle
+        \item Beliebiger Editor
+      \end{itemize}
+      \textbf{Nachteile}
+      \begin{itemize}
+        \item Mehrere GB groß
+        \item Mehr Einrichtung
+      \end{itemize}
+    \end{karte}
+    \begin{karte}[grau]{Typst}{moderne Alternative}
+      \textbf{Vorteile}
+      \begin{itemize}
+        \item Einfachere Syntax
+        \item Sehr schnell
+      \end{itemize}
+      \textbf{Nachteile}
+      \begin{itemize}
+        \item Kein \LaTeX
+        \item Journals wollen \LaTeX
+      \end{itemize}
+    \end{karte}
+  \end{tcbraster}
+\end{frame}
+
+\begin{frame}{Lokale Installation: Distribution und Editor}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Distribution (der Compiler)}
+        \begin{itemize}
+          \item \textbf{TeX Live:} Linux, Windows
+          \item \textbf{MacTeX:} macOS
+          \item \textbf{MiKTeX:} Windows, lädt Pakete bei Bedarf nach
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Editor (wo ihr tippt)}
+        \begin{itemize}
+          \item \textbf{TeXstudio:} einsteigerfreundlich
+          \item \textbf{VS Code} + LaTeX Workshop
+          \item \textbf{Emacs} + AUCTeX
+          \item \textbf{Neovim} + VimTeX
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+  \end{columns}
+  \vspace{0.6em}
+  \begin{merke}
+    \textbf{Empfehlung für heute:} Overleaf. Lokal lohnt sich später, z.\,B.\ fürs Praktikum.
+  \end{merke}
+\end{frame}

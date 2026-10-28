@@ -1,0 +1,41 @@
+% =====================================================================
+\section{Abschluss}
+% =====================================================================
+
+\begin{frame}{Ressourcen}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Nachschlagen}
+        \begin{itemize}
+          \item \texttt{overleaf.com/learn}
+          \item Detexify (Symbol zeichnen)
+          \item \texttt{tex.stackexchange.com}
+          \item Wikibook \glqq\LaTeX-Kompendium\grqq
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{kasten}{Paket-Dokumentation}
+        \begin{itemize}
+          \item CTAN: \texttt{ctan.org}
+          \item Lokal: \texttt{texdoc siunitx}
+          \item TikZ-Beispiele: \texttt{texample.net}
+        \end{itemize}
+      \end{kasten}
+    \end{column}
+  \end{columns}
+  \vspace{0.5em}
+  \begin{merke}
+    Am besten lernt man \LaTeX{} durch Benutzen: Schreibt die nächsten Übungsblätter damit.
+  \end{merke}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dunkel] (current page.south west) rectangle (current page.north east);
+    \node[text=white, font=\fontsize{46}{50}\selectfont\bfseries] (f)
+      at ([yshift=0.5cm]current page.center) {Fragen?};
+    \fill[akzent] ([yshift=-0.4cm, xshift=-1.2cm]f.south) rectangle ++(2.4cm,0.12cm);
+    \node[text=white!70!dunkel, font=\large, below=0.9cm of f] {Danke fürs Mitmachen!};
+  \end{tikzpicture}
+\end{frame}

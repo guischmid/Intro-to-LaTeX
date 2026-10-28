@@ -1,0 +1,104 @@
+% =====================================================================
+\section{Grundgerüst und Text}
+% =====================================================================
+
+\begin{frame}[fragile]{Das minimale Dokument}
+  \begin{columns}[c]
+    \begin{column}{0.56\textwidth}
+\begin{code}
+\documentclass{article}   % Dokumenttyp
+
+% Präambel: Einstellungen und Pakete
+\usepackage[ngerman]{babel}
+\usepackage{amsmath}
+
+\title{Mein erstes Dokument}
+\author{Max Mustermann}
+
+\begin{document}          % Inhalt
+\maketitle
+Hallo Welt!
+\end{document}
+\end{code}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{itemize}
+        \item \textbf{Präambel:} alles vor \texttt{\textbackslash begin\{document\}}
+        \item Befehle beginnen mit \texttt{\textbackslash}
+        \item Pflichtargumente in \texttt{\{\}}, optionale in \texttt{[\,]}
+        \item \texttt{\%} leitet einen Kommentar ein
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Wichtige Pakete für den Anfang}
+  \centering
+  \rowcolors{2}{papier}{hell}
+  \begin{tabular}{@{}p{4.6cm}p{6.8cm}@{}}
+    \toprule
+    \textbf{Paket} & \textbf{Wofür?}\\
+    \midrule
+    \texttt{babel} mit \texttt{ngerman} & Deutsche Silbentrennung und Bezeichnungen\\
+    \texttt{amsmath}, \texttt{amssymb} & Erweiterter Mathesatz und Symbole\\
+    \texttt{siunitx} & Zahlen und Einheiten korrekt setzen\\
+    \texttt{graphicx} & Bilder einbinden\\
+    \texttt{booktabs} & Schöne Tabellen\\
+    \texttt{hyperref} & Klickbare Verweise im PDF\\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+\begin{frame}[fragile]{Struktur, Listen und Verweise}
+  \begin{columns}[c]
+    \begin{column}{0.53\textwidth}
+\begin{code}
+\section{Einleitung}
+\label{sec:einleitung}
+
+Text mit \textbf{fett} und \emph{betont}.
+
+\begin{itemize}
+  \item erster Punkt
+  \item zweiter Punkt
+\end{itemize}
+
+\subsection{Messung}
+Siehe Abschnitt~\ref{sec:einleitung}.
+\end{code}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \begin{itemize}
+        \item Abschnitte werden automatisch nummeriert
+        \item \texttt{itemize} für Stichpunkte, \texttt{enumerate} für Nummern
+        \item \texttt{\textbackslash label} und \texttt{\textbackslash ref}: Verweise passen sich selbst an
+        \item Leerzeile beginnt einen neuen Absatz
+        \item \texttt{\textasciitilde} ist ein geschütztes Leerzeichen
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Fehlermeldungen lesen}
+\begin{code}[listing options={style=log}, colback=akzent!10!papier, colframe=akzent!10!papier]
+! Missing $ inserted.
+<inserted text>
+                $
+l.12 Die Energie ist E = mc^
+                            2.
+\end{code}
+  \vspace{0.3em}
+  \begin{columns}[T]
+    \begin{column}{0.47\textwidth}
+      \begin{itemize}
+        \item \texttt{l.12}: Fehler in Zeile 12
+        \item Hier steht \texttt{\^{}} außerhalb des Mathemodus, es fehlt \texttt{\$\,\dots\$}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \begin{merke}
+        Immer den \textbf{ersten} Fehler beheben, dann neu kompilieren.
+      \end{merke}
+    \end{column}
+  \end{columns}
+\end{frame}

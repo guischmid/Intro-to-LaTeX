@@ -1,0 +1,99 @@
+% =====================================================================
+\section{Was noch alles geht}
+% =====================================================================
+
+\begin{frame}{Zeichnungen mit TikZ}
+  \begin{tcbraster}[raster columns=2, raster equal height, raster column skip=14pt]
+    \begin{bildkarte}
+      \begin{circuitikz}[scale=0.85, transform shape]
+        \draw (0,0) to[battery1, l=$U_0$] (0,3)
+              to[R, l=$R$] (3,3)
+              to[L, l=$L$] (3,0)
+              to[C, l=$C$] (0,0);
+      \end{circuitikz}\par\vspace{0.6em}
+      \pill[dunkel]{circuitikz} \scriptsize\color{grau} RLC-Schwingkreis
+    \end{bildkarte}
+    \begin{bildkarte}
+      \begin{tikzpicture}[scale=0.85, transform shape]
+        \begin{feynman}
+          \vertex (a) at (0,0) {$e^-$};
+          \vertex (b) at (0,-3) {$e^+$};
+          \vertex (v1) at (1.5,-1.5);
+          \vertex (v2) at (3.5,-1.5);
+          \vertex (c) at (5,0) {$\mu^-$};
+          \vertex (d) at (5,-3) {$\mu^+$};
+          \diagram* {
+            (a) -- [fermion] (v1) -- [fermion] (b),
+            (v1) -- [photon, edge label=$\gamma$] (v2),
+            (d) -- [fermion] (v2) -- [fermion] (c),
+          };
+        \end{feynman}
+      \end{tikzpicture}\par\vspace{0.6em}
+      \pill[dunkel]{tikz-feynman} \scriptsize\color{grau} $e^+e^- \to \mu^+\mu^-$
+    \end{bildkarte}
+  \end{tcbraster}
+\end{frame}
+
+\begin{frame}{Plots direkt im Dokument mit \texttt{pgfplots}}
+  \begin{columns}[c]
+    \begin{column}{0.57\textwidth}
+      \begin{bildkarte}
+        \begin{tikzpicture}
+          \begin{axis}[
+              width=6.6cm, height=4.8cm,
+              xlabel={$t$ / \si{\second}}, ylabel={$x$ / \si{\centi\metre}},
+              axis lines=left, axis line style={grau},
+              tick label style={font=\scriptsize, text=grau},
+              label style={font=\small},
+              grid=major, grid style={hell},
+              legend style={draw=none, fill=none, font=\scriptsize},
+              legend pos=north east]
+            \addplot[akzent, line width=1.6pt, domain=0:10, samples=200]
+              {5*exp(-0.3*x)*cos(deg(3*x))};
+            \addlegendentry{gedämpfte Schwingung}
+            \addplot[blau, dashed, domain=0:10, samples=100] {5*exp(-0.3*x)};
+            \addlegendentry{Einhüllende}
+            \addplot[blau, dashed, domain=0:10, samples=100, forget plot] {-5*exp(-0.3*x)};
+          \end{axis}
+        \end{tikzpicture}
+      \end{bildkarte}
+    \end{column}
+    \begin{column}{0.39\textwidth}
+      \begin{itemize}
+        \item Funktionen oder Messdaten (CSV) direkt plotten
+        \item Schrift und Stil passen automatisch zum Dokument
+        \item Alternativ: Plot mit Python exportieren und mit \texttt{\textbackslash includegraphics} einbinden
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]{Pakete und Makros, die Tipparbeit sparen}
+\begin{codeerg}
+% braket: Dirac-Notation
+$\braket{\psi | \hat{H} | \psi}$,
+$\ket{\uparrow}$, $\bra{\phi}$
+
+% Eigenes Makro
+\newcommand{\dd}[1]{\,\mathrm{d}#1}
+$\int f(x) \dd{x}$
+\end{codeerg}
+  \vspace{0.5em}
+  \begin{itemize}
+    \item \texttt{physics}: Kurzbefehle für Ableitungen und Beträge (kollidiert mit \texttt{\textbackslash qty} aus \texttt{siunitx})
+    \item \texttt{mhchem}: Reaktionsgleichungen \quad \texttt{biblatex}: Literaturverzeichnis aus einer \texttt{.bib}-Datei
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[plain,noframenumbering]
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dunkel] (current page.south west) rectangle (current page.north east);
+    \node[text=white, align=center, font=\LARGE\bfseries] (a)
+      at ([yshift=0.6cm]current page.center)
+      {Diese Präsentation ist komplett\\in \LaTeX{} geschrieben.};
+    \fill[akzent] ([yshift=-0.35cm, xshift=-1.2cm]a.south) rectangle ++(2.4cm,0.1cm);
+    \node[text=white!70!dunkel, align=center, below=0.8cm of a]
+      {Paket \texttt{beamer}: Folien, Überblendungen, Themes,\\
+       alle Formeln, Plots und Zeichnungen inklusive.};
+  \end{tikzpicture}
+\end{frame}

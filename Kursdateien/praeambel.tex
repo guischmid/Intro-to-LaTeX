@@ -1,0 +1,199 @@
+% ---------------------------------------------------------------------
+%  Pakete
+% ---------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\IfFileExists{FiraSans.sty}{%
+  \usepackage[sfdefault,lining]{FiraSans}
+  \usepackage[scale=0.85]{FiraMono}}{\usepackage{lmodern}}
+\usepackage{amsmath,amssymb}
+\usepackage[locale=DE]{siunitx}
+\usepackage{braket}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}
+\usepackage[european]{circuitikz}
+\usepackage{tikz-feynman}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% ---------------------------------------------------------------------
+%  Farben
+% ---------------------------------------------------------------------
+\definecolor{dunkel}{HTML}{16213E}   % Hintergrund dunkler Folien, Titel
+\definecolor{akzent}{HTML}{E9A23B}   % Akzent: Balken, Aufzählungszeichen
+\definecolor{blau}{HTML}{3D7EA6}     % Zweitfarbe: Code, Hervorhebungen
+\definecolor{papier}{HTML}{FBFBF8}   % Folienhintergrund
+\definecolor{hell}{HTML}{EDF1F5}     % Kästen
+\definecolor{grau}{HTML}{6B7280}     % Nebentext
+\definecolor{codebg}{HTML}{F2F4F7}   % Code-Hintergrund
+
+% ---------------------------------------------------------------------
+%  Beamer-Layout
+% ---------------------------------------------------------------------
+\setbeamersize{text margin left=1.3cm, text margin right=1.3cm}
+\setbeamercolor{background canvas}{bg=papier}
+\setbeamercolor{normal text}{fg=dunkel}
+\setbeamercolor{structure}{fg=dunkel}
+\setbeamercolor{alerted text}{fg=akzent!80!black}
+\setbeamerfont{frametitle}{size=\Large,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+
+% Folientitel mit Akzentbalken
+\setbeamertemplate{frametitle}{%
+  \vspace*{0.7em}%
+  {\usebeamerfont{frametitle}\color{dunkel}\insertframetitle\par}%
+  \vspace{-0.1em}%
+  {\color{akzent}\rule{2.4em}{2.5pt}}\par
+  \vspace*{-0.6em}}
+
+% Fußzeile mit Fortschrittsbalken
+\setbeamertemplate{footline}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,0.8cm);
+    \fill[hell] (0,0) rectangle (\paperwidth,2.5pt);
+    \pgfmathsetmacro{\fortschritt}{min(1,\the\value{framenumber}/\inserttotalframenumber)}
+    \fill[akzent] (0,0) rectangle (\fortschritt\paperwidth,2.5pt);
+    \node[anchor=west, font=\tiny, text=grau] at (1.3cm,0.42cm) {Intro to \LaTeX};
+    \node[anchor=east, font=\tiny, text=grau] at (\paperwidth-1.3cm,0.42cm)
+      {\insertframenumber\,/\,\inserttotalframenumber};
+  \end{tikzpicture}}
+
+% Aufzählungszeichen
+\setbeamertemplate{itemize item}{\color{akzent}\raisebox{0.15ex}{\rule{0.42em}{0.42em}}}
+\setbeamertemplate{itemize subitem}{\color{grau}\raisebox{0.25ex}{\rule{0.3em}{0.3em}}}
+\setbeamertemplate{enumerate item}{%
+  \tikz[baseline=(n.base)]\node[fill=akzent, circle, inner sep=1.4pt, minimum size=1.25em,
+    text=white, font=\scriptsize\bfseries] (n) {\insertenumlabel};}
+\setlength{\leftmargini}{1.4em}
+
+% Titelfolie
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \fill[dunkel] (current page.south west) rectangle (current page.north east);
+    % dezente Formeln im Hintergrund
+    \begin{scope}[text=white, opacity=0.07]
+      \node[font=\Huge, rotate=8] at ([xshift=-3.8cm,yshift=2.6cm]current page.east)
+        {$i\hbar\,\partial_t \Psi = \hat{H}\Psi$};
+      \node[font=\LARGE, rotate=-6] at ([xshift=-2.6cm,yshift=0.4cm]current page.east)
+        {$\nabla \cdot \vec{E} = \rho / \varepsilon_0$};
+      \node[font=\Huge, rotate=4] at ([xshift=-4.2cm,yshift=-1.7cm]current page.east)
+        {$E = mc^2$};
+      \node[font=\LARGE, rotate=-10] at ([xshift=-1.8cm,yshift=-3.0cm]current page.east)
+        {$\oint \vec{B} \cdot \mathrm{d}\vec{s} = \mu_0 I$};
+    \end{scope}
+    \node[anchor=south west, inner sep=0, text=white,
+          font=\fontsize{42}{46}\selectfont\bfseries] (t)
+      at ([xshift=1.5cm,yshift=0.5cm]current page.west) {\inserttitle};
+    \fill[akzent] ([yshift=-0.45cm]t.south west) rectangle ++(3cm,0.13cm);
+    \node[anchor=north west, inner sep=0, text=white!85!dunkel, font=\Large]
+      at ([yshift=-0.9cm]t.south west) {\insertsubtitle};
+    \node[anchor=south west, inner sep=0, text=white!65!dunkel, font=\small, align=left]
+      at ([xshift=1.5cm,yshift=1.2cm]current page.south west)
+      {\textbf{\insertauthor}\\[2pt]\insertinstitute\\[2pt]\insertdate};
+  \end{tikzpicture}}
+
+% Abschnittsfolien
+\newcommand{\zweistellig}[1]{\ifnum#1<10 0\fi\number#1}
+\AtBeginSection[]{%
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture, overlay]
+      \fill[dunkel] (current page.south west) rectangle (current page.north east);
+      \node[anchor=south west, inner sep=0, text=akzent,
+            font=\fontsize{64}{64}\selectfont\bfseries] (n)
+        at ([xshift=1.5cm,yshift=0.1cm]current page.west) {\zweistellig{\value{section}}};
+      \node[anchor=north west, inner sep=0, text=white,
+            font=\fontsize{30}{34}\selectfont\bfseries]
+        at ([yshift=-0.55cm]n.south west) {\insertsectionhead};
+    \end{tikzpicture}
+  \end{frame}}
+
+% ---------------------------------------------------------------------
+%  Kästen
+% ---------------------------------------------------------------------
+\newtcolorbox{kasten}[1]{enhanced, halign=flush left, colback=hell, colframe=akzent, boxrule=0pt,
+  leftrule=3pt, arc=3pt, left=8pt, right=8pt, top=4pt, bottom=6pt,
+  title={#1}, colbacktitle=hell, coltitle=dunkel, fonttitle=\bfseries,
+  titlerule=0pt, toptitle=5pt, bottomtitle=0pt}
+
+\newtcolorbox{merke}{enhanced, halign=flush left, colback=akzent!14!papier, colframe=akzent,
+  boxrule=0pt, leftrule=3pt, arc=3pt, left=10pt, top=5pt, bottom=5pt}
+
+\newtcolorbox{karte}[3][akzent]{enhanced, halign=flush left, colback=white, colframe=hell,
+  boxrule=0.8pt, arc=4pt, left=8pt, right=8pt, top=6pt, bottom=2pt,
+  borderline north={3pt}{0pt}{#1}, fontupper=\small,
+  before upper app={\setlength{\itemsep}{0pt}},
+  before upper={{\large\bfseries #2}\par{\scriptsize\color{grau}#3}\par\vspace{0.2em}}}
+
+\newtcolorbox{bildkarte}{enhanced, colback=white, colframe=hell, boxrule=0.8pt,
+  arc=4pt, halign=center, valign=center}
+
+% kleine Markierungen
+\newcommand{\pill}[2][akzent]{%
+  \tikz[baseline=(p.base)]\node[fill=#1, text=white, rounded corners=6pt,
+    inner xsep=6pt, inner ysep=2.5pt, font=\scriptsize\bfseries] (p) {#2};}
+\newcommand{\zeittag}[1]{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east, fill=dunkel, text=white, rounded corners=6pt,
+      inner xsep=7pt, inner ysep=3pt, font=\scriptsize\bfseries]
+      at ([xshift=-1.3cm,yshift=-1.05cm]current page.north east) {#1};
+  \end{tikzpicture}}
+
+% Zeile im Ablauf-Zeitstrahl
+\newcommand{\zeile}[5]{%
+  \node[anchor=east, font=\small\bfseries, text=grau] at (1.9,#1) {#2};
+  \fill[#5] (2.3,#1) circle (4.5pt);
+  \node[anchor=west, font=\bfseries, text=#5!70!dunkel] at (2.8,#1) {#3};
+  \node[anchor=west, font=\small, text=grau] at (7.6,#1) {#4};}
+
+% ---------------------------------------------------------------------
+%  Code-Darstellung
+% ---------------------------------------------------------------------
+\lstdefinestyle{latex}{
+  language=[LaTeX]TeX,
+  basicstyle=\ttfamily\footnotesize\color{dunkel},
+  commentstyle=\color{grau}\itshape,
+  texcsstyle=*\color{blau}\bfseries,
+  keywordstyle=\color{blau}\bfseries,
+  columns=fullflexible, keepspaces=true, breaklines=true,
+  showstringspaces=false,
+  moretexcs={documentclass,usepackage,section,subsection,label,ref,eqref,
+             begin,end,item,frac,sqrt,int,sum,vec,partial,qty,unit,braket,
+             ket,bra,newcommand,includegraphics,textbf,emph,maketitle,title,
+             author,text,nabla,varepsilon,mathrm,hat},
+  literate={ä}{{\"a}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+           {Ä}{{\"A}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1 {ß}{{\ss}}1
+}
+\lstdefinestyle{log}{
+  basicstyle=\ttfamily\footnotesize\color{dunkel},
+  columns=fullflexible, keepspaces=true}
+
+% Nur Code
+\newtcblisting{code}[1][]{enhanced, listing only, colback=codebg,
+  colframe=codebg, boxrule=0pt, arc=4pt, left=8pt, right=6pt, top=3pt,
+  bottom=3pt, listing options={style=latex}, #1}
+
+% Code links, gesetztes Ergebnis rechts
+\newtcblisting{codeerg}[1][]{bicolor, listing side text, colback=codebg,
+  colbacklower=white, colframe=codebg, boxrule=1pt, arc=4pt,
+  lefthand ratio=0.57, sidebyside gap=14pt, sidebyside align=center seam,
+  segmentation hidden, left=8pt, right=8pt, top=14pt, bottom=6pt,
+  listing options={style=latex},
+  overlay={%
+    \node[anchor=north west, inner sep=5pt, font=\tiny\bfseries, text=grau]
+      at (frame.north west) {CODE};
+    \node[anchor=north west, inner sep=5pt, font=\tiny\bfseries, text=grau]
+      at (frame.north west-|segmentation.east) {ERGEBNIS};},
+  #1}
+
+% ---------------------------------------------------------------------
+%  Titelangaben
+% ---------------------------------------------------------------------
+\title{Intro to \LaTeX}
+\subtitle{Workshop für Physik-Erstis}
+\author{Gigi}
+\institute{jDPG Regionalgruppe Tübingen}
+\date{\today}
