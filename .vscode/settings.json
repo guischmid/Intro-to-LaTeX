@@ -1,3 +1,20 @@
 {
-  "latex-workshop.latex.outDir": "%DIR%/pdf"
+  "latex-workshop.latex.outDir": "%DIR%/pdf",
+  "latex-workshop.latex.auxDir": "%DIR%/build",
+  "latex-workshop.latex.tools": [
+    {
+      "name": "latexmk",
+      "command": "latexmk",
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "-pdf",
+        "-outdir=%OUTDIR%",
+        "-auxdir=%AUXDIR%",
+        "%DOC%"
+      ],
+      "env": {}
+    }
+  ]
 }
