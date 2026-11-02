@@ -7,7 +7,7 @@ Materialien zum Workshop **Intro to LaTeX** der jDPG Regionalgruppe Tübingen f�
 | Material | Beschreibung | Datei |
 |---|---|---|
 | Folien | Die Präsentation aus dem Workshop | `Kursdateien/pdf/latex-workshop.pdf` |
-| Handout | Die wichtigsten Befehle kompakt zum Nachschlagen | `Kursdateien/pdf/handout.pdf` *(folgt)* |
+| Handout | Die wichtigsten Befehle kompakt zum Nachschlagen | `Kursdateien/pdf/handout.pdf` |
 | Übungsblatt-Vorlage | Vorlage für eure Abgaben aus dem Praxisteil | `Kursdateien/vorlagen/uebungsblatt.tex` *(folgt)* |
 | Formel-Challenge | Die Formeln aus dem Praxisteil mit Lösungen | `Kursdateien/aufgaben/formel-challenge.tex` *(folgt)* |
 

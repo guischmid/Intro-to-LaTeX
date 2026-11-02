@@ -1,0 +1,90 @@
+% =====================================================================
+%  Intro to LaTeX: Übungsblatt-Vorlage (Aufgabe 1 aus dem Praxisteil)
+%  Kompilieren mit pdfLaTeX (Overleaf-Standard)
+%  Alles mit "HIER ANPASSEN" an euch anpassen, den Rest einfach übernehmen.
+% =====================================================================
+\documentclass[a4paper,11pt]{article}
+
+% ---------------------------------------------------------------------
+%  Pakete
+% ---------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}        % deutsche Silbentrennung und Bezeichnungen
+\usepackage[a4paper, margin=2.5cm, headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb}       % align, \text, Symbole
+\usepackage[locale=DE]{siunitx}    % \qty{9.81}{\metre\per\second\squared}
+\usepackage{fancyhdr}              % Bonus: Kopf- und Fußzeile
+
+% ---------------------------------------------------------------------
+%  Eure Angaben (HIER ANPASSEN)
+% ---------------------------------------------------------------------
+\newcommand{\name}{Max Mustermann}
+\newcommand{\matrikel}{1234567}
+\newcommand{\gruppe}{Gruppe 3}
+\newcommand{\vorlesung}{Experimentalphysik I}
+\newcommand{\blatt}{1}
+
+% ---------------------------------------------------------------------
+%  Bonus: eigene Makros
+% ---------------------------------------------------------------------
+\newcommand{\diff}{\mathrm{d}}                    % aufrechtes d für Ableitungen
+\newcommand{\abl}[2]{\frac{\diff #1}{\diff #2}}   % \abl{v}{t} ergibt dv/dt
+
+% ---------------------------------------------------------------------
+%  Bonus: Kopf- und Fußzeile
+% ---------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}                                        % alte Einträge löschen
+\lhead{\vorlesung{} -- Blatt \blatt}
+\rhead{\name}
+\cfoot{\thepage}
+
+% ---------------------------------------------------------------------
+%  Titel
+% ---------------------------------------------------------------------
+\title{\vorlesung\\[0.3em] \large Übungsblatt \blatt}
+\author{\name \\ Matrikelnummer: \matrikel \\ Übungsgruppe: \gruppe}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% =====================================================================
+\section*{Aufgabe 1}
+% =====================================================================
+Ein Stein fällt aus der Höhe $h = \qty{20}{\metre}$ aus der Ruhe zu Boden.
+Der Luftwiderstand wird vernachlässigt.
+
+\subsection*{a)}
+Die Bewegungsgleichung lautet
+\begin{equation}
+  \abl{v}{t} = -g
+  \label{eq:bewegung}
+\end{equation}
+mit der Erdbeschleunigung $g = \qty{9.81}{\metre\per\second\squared}$.
+
+\subsection*{b)}
+Zweimaliges Integrieren von Gleichung~\eqref{eq:bewegung} liefert
+$z(t) = h - \frac{1}{2} g t^2$. Für die Fallzeit gilt $z(t_\text{F}) = 0$:
+\begin{align}
+  0 &= h - \frac{1}{2} g t_\text{F}^2 \\
+  \Rightarrow \quad t_\text{F} &= \sqrt{\frac{2h}{g}}
+    = \sqrt{\frac{2 \cdot \qty{20}{\metre}}{\qty{9.81}{\metre\per\second\squared}}}
+    \approx \qty{2.02}{\second}
+\end{align}
+
+\subsection*{c)}
+Die Geschwindigkeit beim Aufprall ist
+\begin{align*}
+  v_\text{F} &= g \, t_\text{F} = \sqrt{2 g h} \\
+             &\approx \qty{19.8}{\metre\per\second}.
+\end{align*}
+
+% =====================================================================
+\section*{Aufgabe 2}
+% =====================================================================
+\subsection*{a)}
+% Hier geht es weiter ...
+
+\end{document}

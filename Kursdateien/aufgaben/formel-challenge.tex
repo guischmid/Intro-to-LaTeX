@@ -1,0 +1,142 @@
+% =====================================================================
+%  Intro to LaTeX: Formel-Challenge (Aufgabe 2 aus dem Praxisteil)
+%  jDPG Regionalgruppe Tübingen
+%  Seite 1: Aufgaben, Seite 2: Lösungen
+%  Kompilieren mit pdfLaTeX: latexmk -pdf formel-challenge.tex
+% =====================================================================
+\documentclass[a4paper,11pt]{scrartcl}
+
+% ---------------------------------------------------------------------
+%  Pakete
+% ---------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\IfFileExists{FiraSans.sty}{%
+  \usepackage[sfdefault,lining]{FiraSans}
+  \usepackage[scale=0.85]{FiraMono}}{%
+  \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}}
+\usepackage[a4paper, top=2cm, bottom=2cm, left=2.2cm, right=2.2cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.4em}
+\pagestyle{empty}
+
+% ---------------------------------------------------------------------
+%  Farben (wie in den Folien)
+% ---------------------------------------------------------------------
+\definecolor{dunkel}{HTML}{16213E}
+\definecolor{akzent}{HTML}{E9A23B}
+\definecolor{blau}{HTML}{3D7EA6}
+\definecolor{hell}{HTML}{EDF1F5}
+\definecolor{grau}{HTML}{6B7280}
+\definecolor{codebg}{HTML}{F2F4F7}
+
+% ---------------------------------------------------------------------
+%  Bausteine
+% ---------------------------------------------------------------------
+% Titelzeile wie im Handout
+\newcommand{\titelzeile}[1]{%
+  \begin{tcolorbox}[enhanced, colback=dunkel, colframe=dunkel, arc=2pt,
+    boxrule=0pt, left=10pt, right=10pt, top=7pt, bottom=7pt, before skip=0pt]
+    \color{white}
+    {\sffamily\bfseries\fontsize{20}{22}\selectfont Formel-Challenge}\hfill
+    {\sffamily\small\color{white!70!dunkel} #1}\par
+    \vspace{2pt}{\color{akzent}\rule{2.2cm}{2pt}}\hfill
+    {\scriptsize\color{white!60!dunkel} Intro to \LaTeX{} \,|\, jDPG Regionalgruppe Tübingen}
+  \end{tcolorbox}}
+
+% Level-Markierung wie \pill in den Folien
+\newcommand{\level}[2]{%
+  \par\vspace{1em}%
+  \tikz[baseline=(p.base)]\node[fill=#1, text=white, rounded corners=6pt,
+    inner xsep=6pt, inner ysep=2.5pt, font=\small\bfseries] (p) {Level #2};\par}
+
+\newtcolorbox{formel}{enhanced, colback=white, colframe=hell, boxrule=0.8pt,
+  arc=4pt, halign=center, top=6pt, bottom=6pt}
+
+\lstdefinestyle{latex}{
+  language=[LaTeX]TeX,
+  basicstyle=\ttfamily\small\color{dunkel},
+  commentstyle=\color{grau}\itshape,
+  texcsstyle=*\color{blau}\bfseries,
+  columns=fullflexible, keepspaces=true, breaklines=true,
+  showstringspaces=false}
+\newtcblisting{code}{enhanced, listing only, colback=codebg, colframe=codebg,
+  boxrule=0pt, arc=4pt, left=8pt, right=6pt, top=2pt, bottom=2pt,
+  listing options={style=latex}}
+
+% Formeln nur einmal definieren, damit Aufgabe und Lösung gleich bleiben
+\newcommand{\formelA}{F = m a, \qquad E = m c^2, \qquad p = \frac{h}{\lambda}}
+\newcommand{\formelB}{\nabla \times \vec{B} = \mu_0 \vec{j} + \mu_0 \varepsilon_0 \frac{\partial \vec{E}}{\partial t}}
+\newcommand{\formelC}{\langle x \rangle = \int_{-\infty}^{\infty} \psi^*(x)\, x\, \psi(x) \,\mathrm{d}x}
+\newcommand{\formelD}{Z = \sum_{n=0}^{\infty} \exp\left(-\frac{E_n}{k_\mathrm{B} T}\right), \qquad E_n = \hbar\omega\left(n + \frac{1}{2}\right)}
+
+\begin{document}
+
+% =====================================================================
+%  Aufgaben
+% =====================================================================
+\titelzeile{Aufgaben}
+
+Setzt die Formeln so genau wie möglich nach. Achtet auf Kleinigkeiten:
+aufrechte Indizes, Abstände, Klammergrößen.
+
+\level{blau!60}{1}
+\begin{formel} \vspace{-1.2em}\[ \formelA \] \end{formel}
+
+\level{blau}{2}
+\begin{formel} \vspace{-1.2em}\[ \formelB \] \end{formel}
+
+\level{akzent}{3}
+\begin{formel} \vspace{-1.2em}\[ \formelC \] \end{formel}
+
+\level{akzent!70!red}{4}
+\begin{formel} \vspace{-1.2em}\[ \formelD \] \end{formel}
+
+\vfill
+{\small\color{grau} Tipp: Symbol unbekannt? Auf \texttt{detexify.kirelabs.org}
+zeichnen und den Befehl bekommen. Die Lösungen stehen auf der nächsten Seite.}
+
+\newpage
+% =====================================================================
+%  Lösungen
+% =====================================================================
+\titelzeile{Lösungen}
+
+\level{blau!60}{1}
+\begin{code}
+\[ F = m a, \qquad E = m c^2, \qquad p = \frac{h}{\lambda} \]
+\end{code}
+\textbf{Achtung:} \texttt{\textbackslash qquad} für Abstand zwischen Formeln,
+nicht viele Leerzeichen (die ignoriert \LaTeX{} im Mathemodus).
+
+\level{blau}{2}
+\begin{code}
+\[ \nabla \times \vec{B} = \mu_0 \vec{j}
+   + \mu_0 \varepsilon_0 \frac{\partial \vec{E}}{\partial t} \]
+\end{code}
+\textbf{Achtung:} \texttt{\textbackslash varepsilon} ($\varepsilon$) statt
+\texttt{\textbackslash epsilon} ($\epsilon$), \texttt{\textbackslash times} für das Kreuzprodukt.
+
+\level{akzent}{3}
+\begin{code}
+\[ \langle x \rangle = \int_{-\infty}^{\infty}
+   \psi^*(x)\, x\, \psi(x) \,\mathrm{d}x \]
+\end{code}
+\textbf{Achtung:} \texttt{\textbackslash langle}, \texttt{\textbackslash rangle} statt
+\texttt{<}, \texttt{>}. Das Differential $\mathrm{d}x$ aufrecht und mit kleinem
+Abstand \texttt{\textbackslash,} davor.
+
+\level{akzent!70!red}{4}
+\begin{code}
+\[ Z = \sum_{n=0}^{\infty} \exp\left(-\frac{E_n}{k_\mathrm{B} T}\right),
+   \qquad E_n = \hbar\omega\left(n + \frac{1}{2}\right) \]
+\end{code}
+\textbf{Achtung:} \texttt{\textbackslash left(} \dots\ \texttt{\textbackslash right)}
+passt die Klammern an den Bruch an. Der Index B in $k_\mathrm{B}$ ist ein Name
+(Boltzmann), keine Variable, deshalb aufrecht mit \texttt{\textbackslash mathrm}.
+
+\end{document}
