@@ -84,16 +84,3 @@ $\int f(x) \dd{x}$
     \item \texttt{mhchem}: Reaktionsgleichungen \quad \texttt{biblatex}: Literaturverzeichnis aus einer \texttt{.bib}-Datei
   \end{itemize}
 \end{frame}
-
-\begin{frame}[plain,noframenumbering]
-  \begin{tikzpicture}[remember picture, overlay]
-    \fill[dunkel] (current page.south west) rectangle (current page.north east);
-    \node[text=white, align=center, font=\LARGE\bfseries] (a)
-      at ([yshift=0.6cm]current page.center)
-      {Diese Präsentation ist komplett\\in \LaTeX{} geschrieben.};
-    \fill[akzent] ([yshift=-0.35cm, xshift=-1.2cm]a.south) rectangle ++(2.4cm,0.1cm);
-    \node[text=white!70!dunkel, align=center, below=0.8cm of a]
-      {Paket \texttt{beamer}: Folien, Überblendungen, Themes,\\
-       alle Formeln, Plots und Zeichnungen inklusive.};
-  \end{tikzpicture}
-\end{frame}

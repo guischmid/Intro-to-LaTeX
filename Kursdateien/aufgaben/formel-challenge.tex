@@ -13,7 +13,9 @@
 \usepackage[ngerman]{babel}
 \IfFileExists{FiraSans.sty}{%
   \usepackage[sfdefault,lining]{FiraSans}
-  \usepackage[scale=0.85]{FiraMono}}{%
+  \usepackage[scale=0.85]{FiraMono}%
+  % Standard-Logo ist auf Computer Modern gekernt, in Fira überlappt das A das L
+  \DeclareRobustCommand{\LaTeX}{L\kern-.22em\raisebox{.24em}{\scalebox{.72}{A}}\kern-.08em\TeX}}{%
   \IfFileExists{lmodern.sty}{\usepackage{lmodern}}{}}
 \usepackage[a4paper, top=2cm, bottom=2cm, left=2.2cm, right=2.2cm]{geometry}
 \usepackage{amsmath,amssymb}
@@ -27,12 +29,12 @@
 % ---------------------------------------------------------------------
 %  Farben (wie in den Folien)
 % ---------------------------------------------------------------------
-\definecolor{dunkel}{HTML}{16213E}
-\definecolor{akzent}{HTML}{E9A23B}
-\definecolor{blau}{HTML}{3D7EA6}
-\definecolor{hell}{HTML}{EDF1F5}
+\definecolor{dunkel}{HTML}{1B2A41}
+\definecolor{akzent}{HTML}{2A9D8F}
+\definecolor{blau}{HTML}{5468A8}
+\definecolor{hell}{HTML}{EAF0F2}
 \definecolor{grau}{HTML}{6B7280}
-\definecolor{codebg}{HTML}{F2F4F7}
+\definecolor{codebg}{HTML}{F0F4F5}
 
 % ---------------------------------------------------------------------
 %  Bausteine

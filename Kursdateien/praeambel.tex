@@ -6,7 +6,10 @@
 \usepackage[ngerman]{babel}
 \IfFileExists{FiraSans.sty}{%
   \usepackage[sfdefault,lining]{FiraSans}
-  \usepackage[scale=0.85]{FiraMono}}{\usepackage{lmodern}}
+  \usepackage[scale=0.85]{FiraMono}%
+  % Standard-Logo ist auf Computer Modern gekernt, in Fira überlappt das A das L
+  \DeclareRobustCommand{\LaTeX}{L\kern-.22em\raisebox{.24em}{\scalebox{.72}{A}}\kern-.08em\TeX}}%
+  {\usepackage{lmodern}}
 \usepackage{amsmath,amssymb}
 \usepackage[locale=DE]{siunitx}
 \usepackage{braket}
@@ -23,13 +26,13 @@
 % ---------------------------------------------------------------------
 %  Farben
 % ---------------------------------------------------------------------
-\definecolor{dunkel}{HTML}{16213E}   % Hintergrund dunkler Folien, Titel
-\definecolor{akzent}{HTML}{E9A23B}   % Akzent: Balken, Aufzählungszeichen
-\definecolor{blau}{HTML}{3D7EA6}     % Zweitfarbe: Code, Hervorhebungen
-\definecolor{papier}{HTML}{FBFBF8}   % Folienhintergrund
-\definecolor{hell}{HTML}{EDF1F5}     % Kästen
-\definecolor{grau}{HTML}{6B7280}     % Nebentext
-\definecolor{codebg}{HTML}{F2F4F7}   % Code-Hintergrund
+\definecolor{dunkel}{HTML}{2F4A40}   % Hintergrund dunkler Folien, Titel
+\definecolor{akzent}{HTML}{D2694B}   % Akzent: Aufzählungszeichen, Kastenränder
+\definecolor{blau}{HTML}{557A6B}     % Zweitfarbe: Code, Hervorhebungen
+\definecolor{papier}{HTML}{F6F4EF}   % Folienhintergrund
+\definecolor{hell}{HTML}{E6ECE7}     % Kästen
+\definecolor{grau}{HTML}{6E736F}     % Nebentext
+\definecolor{codebg}{HTML}{EEF1EC}   % Code-Hintergrund
 
 % ---------------------------------------------------------------------
 %  Beamer-Layout
@@ -42,13 +45,11 @@
 \setbeamerfont{frametitle}{size=\Large,series=\bfseries}
 \setbeamertemplate{navigation symbols}{}
 
-% Folientitel mit Akzentbalken
+% Folientitel
 \setbeamertemplate{frametitle}{%
   \vspace*{0.7em}%
   {\usebeamerfont{frametitle}\color{dunkel}\insertframetitle\par}%
-  \vspace{-0.1em}%
-  {\color{akzent}\rule{2.4em}{2.5pt}}\par
-  \vspace*{-0.6em}}
+  \vspace*{-0.2em}}
 
 % Fußzeile mit Fortschrittsbalken
 \setbeamertemplate{footline}{%
@@ -88,9 +89,8 @@
     \node[anchor=south west, inner sep=0, text=white,
           font=\fontsize{42}{46}\selectfont\bfseries] (t)
       at ([xshift=1.5cm,yshift=0.5cm]current page.west) {\inserttitle};
-    \fill[akzent] ([yshift=-0.45cm]t.south west) rectangle ++(3cm,0.13cm);
     \node[anchor=north west, inner sep=0, text=white!85!dunkel, font=\Large]
-      at ([yshift=-0.9cm]t.south west) {\insertsubtitle};
+      at ([yshift=-0.5cm]t.south west) {\insertsubtitle};
     \node[anchor=south west, inner sep=0, text=white!65!dunkel, font=\small, align=left]
       at ([xshift=1.5cm,yshift=1.2cm]current page.south west)
       {\textbf{\insertauthor}\\[2pt]\insertinstitute\\[2pt]\insertdate};
@@ -122,11 +122,10 @@
 \newtcolorbox{merke}{enhanced, halign=flush left, colback=akzent!14!papier, colframe=akzent,
   boxrule=0pt, leftrule=3pt, arc=3pt, left=10pt, top=5pt, bottom=5pt}
 
-\newtcolorbox{karte}[3][akzent]{enhanced, halign=flush left, colback=white, colframe=hell,
-  boxrule=0.8pt, arc=4pt, left=8pt, right=8pt, top=6pt, bottom=2pt,
-  borderline north={3pt}{0pt}{#1}, fontupper=\small,
+\newtcolorbox{karte}[2]{enhanced, halign=flush left, colback=white, colframe=hell,
+  boxrule=0.8pt, arc=4pt, left=8pt, right=8pt, top=6pt, bottom=2pt, fontupper=\small,
   before upper app={\setlength{\itemsep}{0pt}},
-  before upper={{\large\bfseries #2}\par{\scriptsize\color{grau}#3}\par\vspace{0.2em}}}
+  before upper={{\large\bfseries #1}\par{\scriptsize\color{grau}#2}\par\vspace{0.2em}}}
 
 \newtcolorbox{bildkarte}{enhanced, colback=white, colframe=hell, boxrule=0.8pt,
   arc=4pt, halign=center, valign=center}
@@ -193,7 +192,7 @@
 %  Titelangaben
 % ---------------------------------------------------------------------
 \title{Intro to \LaTeX}
-\subtitle{Workshop für Physik-Erstis}
-\author{Gigi}
-\institute{jDPG Regionalgruppe Tübingen}
+\subtitle{Workshop für LaTeX-Einsteiger*innen}
+\author{Guilherme Schmid}
 \date{\today}
+  
